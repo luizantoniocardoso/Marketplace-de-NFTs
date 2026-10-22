@@ -1,0 +1,16 @@
+{
+  "runs": 3,
+  "port": 4174,
+  "outputDir": "lighthouse-reports",
+  "profiles": ["mobile", "desktop"],
+  "pages": [
+    { "name": "home", "path": "/" },
+    { "name": "nft-details", "path": "/nft/1" }
+  ],
+  "targets": {
+    "performance": 90,
+    "accessibility": 95,
+    "best-practices": 95,
+    "seo": 90
+  }
+}
