@@ -1,11 +1,5 @@
 import { z } from 'zod/mini'
-import {
-  NFT_COLLECTIONS,
-  NFT_NETWORKS,
-  NFT_SORTS,
-  NFT_TABS,
-  type NftListParams,
-} from '@/shared/contracts'
+import { NFT_COLLECTIONS, NFT_NETWORKS, NFT_SORTS, NFT_TABS, type NftListParams } from '@/shared/contracts'
 import { isEthAmount } from '@/shared/lib'
 
 export const CATALOG_PAGE_SIZE = 9

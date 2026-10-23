@@ -1,9 +1,8 @@
-import { useId, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { getApiError } from '@/shared/api'
 import type { UserDto } from '@/shared/contracts'
-import { applyFieldErrors, standardResolver } from '@/shared/lib'
-import { Button, ComingSoon, Field, fieldDescribedBy, PasswordInput, TextInput } from '@/shared/ui'
+import { standardResolver, useFormFields, useServerErrors } from '@/shared/lib'
+import { Button, ComingSoon, Field, FormError, PasswordInput, TextInput } from '@/shared/ui'
 import { loginSchema, useLogin, type LoginValues } from '../model'
 
 interface LoginFormProps {
@@ -11,59 +10,34 @@ interface LoginFormProps {
 }
 
 export function LoginForm({ onSuccess }: LoginFormProps) {
-  const id = useId()
-  const [formError, setFormError] = useState<string>()
   const loginMutation = useLogin()
-  const {
-    register,
-    handleSubmit,
-    setError,
-    formState: { errors },
-  } = useForm<LoginValues>({ resolver: standardResolver(loginSchema), defaultValues: { email: '', password: '' } })
+  const form = useForm<LoginValues>({
+    resolver: standardResolver(loginSchema),
+    defaultValues: { email: '', password: '' },
+  })
+  const fields = useFormFields(form)
+  const serverErrors = useServerErrors(form.setError, ['email', 'password'])
+  const email = fields('email')
+  const password = fields('password')
 
-  const onSubmit = handleSubmit((values) => {
-    setFormError(undefined)
+  const onSubmit = form.handleSubmit((values) => {
+    serverErrors.clear()
     loginMutation.mutate(values, {
       onSuccess: (response) => onSuccess?.(response.user),
-      onError: (error) => {
-        const apiError = getApiError(error)
-        if (!applyFieldErrors(setError, apiError.fields, ['email', 'password'])) setFormError(apiError.message)
-      },
+      onError: (error) => serverErrors.report(getApiError(error)),
     })
   })
 
-  const emailId = `${id}-email`
-  const passwordId = `${id}-password`
-
   return (
-    <form noValidate onSubmit={onSubmit} className="flex flex-col gap-3" aria-describedby={formError ? `${id}-error` : undefined}>
-      <Field id={emailId} label="E-mail" hideLabel error={errors.email?.message}>
-        <TextInput
-          id={emailId}
-          type="email"
-          autoComplete="email"
-          placeholder="contato@email.com"
-          aria-invalid={errors.email ? true : undefined}
-          aria-describedby={fieldDescribedBy(emailId, errors.email?.message)}
-          {...register('email')}
-        />
+    <form noValidate onSubmit={onSubmit} className="flex flex-col gap-3">
+      <Field {...email.field} label="E-mail" hideLabel>
+        <TextInput type="email" autoComplete="email" placeholder="contato@email.com" {...email.control} />
       </Field>
-      <Field id={passwordId} label="Senha" hideLabel error={errors.password?.message}>
-        <PasswordInput
-          id={passwordId}
-          autoComplete="current-password"
-          placeholder="Senha"
-          aria-invalid={errors.password ? true : undefined}
-          aria-describedby={fieldDescribedBy(passwordId, errors.password?.message)}
-          {...register('password')}
-        />
+      <Field {...password.field} label="Senha" hideLabel>
+        <PasswordInput autoComplete="current-password" placeholder="Senha" {...password.control} />
       </Field>
       <ComingSoon className="self-end text-body text-text-accent">Esqueceu a senha?</ComingSoon>
-      {formError && (
-        <p id={`${id}-error`} role="alert" className="text-body text-coral">
-          {formError}
-        </p>
-      )}
+      {serverErrors.formError && <FormError>{serverErrors.formError}</FormError>}
       <Button type="submit" variant="brand" size="xl" className="mt-4 w-full" disabled={loginMutation.isPending}>
         {loginMutation.isPending ? 'Entrando…' : 'Entrar'}
       </Button>

@@ -7,4 +7,4 @@ export {
   FOOTER_SOCIALS,
   FOOTER_WALLETS,
 } from './content'
-export type { FooterFeature, FooterSocial } from './content'
+export type { FooterFeature } from './content'

@@ -27,8 +27,7 @@ export function FacetOptionButton({ label, count, active, emphasizeCount, onClic
           active && 'text-text-accent',
         )}
       >
-        <span className="sr-only">, </span>({count})
-        <span className="sr-only"> itens</span>
+        <span className="sr-only">, </span>({count})<span className="sr-only"> itens</span>
       </span>
     </button>
   )

@@ -5,7 +5,8 @@ import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
 
 const SOCKET_CLIENT_MODULES = /node_modules[\\/](socket\.io-client|engine\.io-client)[\\/]/
-const SOCKET_PROTOCOL_MODULES = /node_modules[\\/](socket\.io-parser|engine\.io-parser|@socket\.io[\\/]component-emitter)[\\/]/
+const SOCKET_PROTOCOL_MODULES =
+  /node_modules[\\/](socket\.io-parser|engine\.io-parser|@socket\.io[\\/]component-emitter)[\\/]/
 
 export default defineConfig({
   plugins: [
@@ -22,7 +23,7 @@ export default defineConfig({
     sourcemap: true,
     rolldownOptions: {
       output: {
-        advancedChunks: {
+        codeSplitting: {
           groups: [
             { name: 'socket-protocol', test: SOCKET_PROTOCOL_MODULES, priority: 2 },
             { name: 'socket-client', test: SOCKET_CLIENT_MODULES, priority: 1 },

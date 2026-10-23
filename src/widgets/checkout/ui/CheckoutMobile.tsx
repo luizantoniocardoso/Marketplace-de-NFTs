@@ -18,7 +18,11 @@ export function CheckoutMobilePayment({ checkout }: { checkout: CheckoutControll
         </Link>
       </div>
       <div className="mt-4">
-        <WalletOptions wallets={checkout.wallets} selectedId={checkout.selectedWallet?.id ?? null} onSelect={checkout.selectWallet} />
+        <WalletOptions
+          wallets={checkout.wallets}
+          selectedId={checkout.selectedWallet?.id ?? null}
+          onSelect={checkout.selectWallet}
+        />
       </div>
 
       <h2 className="mt-6 text-body-lg font-bold text-foreground">Carteira e rede</h2>
@@ -36,7 +40,6 @@ export function CheckoutMobilePayment({ checkout }: { checkout: CheckoutControll
         <span className="text-foreground">Total:</span>
         <span className="text-text-accent">{quote.data ? formatEth(quote.data.totalEth) : '—'}</span>
       </p>
-
     </div>
   )
 }

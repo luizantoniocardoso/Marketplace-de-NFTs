@@ -6,7 +6,9 @@ import { isScenario } from '../scenarios'
 import { apiError, authenticate, findNft, noContent, simulateNetwork } from '../services'
 
 function failMutation() {
-  return isScenario('favorites-error') ? apiError('UNAVAILABLE', 'Não foi possível atualizar seus favoritos agora.') : null
+  return isScenario('favorites-error')
+    ? apiError('UNAVAILABLE', 'Não foi possível atualizar seus favoritos agora.')
+    : null
 }
 
 export const favoriteHandlers = [
@@ -40,7 +42,9 @@ export const favoriteHandlers = [
     if (auth.error) return auth.error
     const scenarioFailure = failMutation()
     if (scenarioFailure) return scenarioFailure
-    db.data.favorites[auth.user.id] = (db.data.favorites[auth.user.id] ?? []).filter((id) => id !== String(params.nftId))
+    db.data.favorites[auth.user.id] = (db.data.favorites[auth.user.id] ?? []).filter(
+      (id) => id !== String(params.nftId),
+    )
     db.persist()
     return noContent()
   }),

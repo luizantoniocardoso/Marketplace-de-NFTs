@@ -5,8 +5,6 @@ export interface MockUser extends UserDto {
   passwordHash: string
 }
 
-export const DEMO_PASSWORD_HINT = 'kurio123'
-
 export function createUserFixtures(): MockUser[] {
   return [
     {

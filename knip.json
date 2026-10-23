@@ -1,0 +1,7 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "entry": ["src/app/routes/**/*.tsx", "scripts/*.ts"],
+  "project": ["src/**/*.{ts,tsx,css}", "scripts/**/*.ts", "tests/**/*.ts"],
+  "ignore": ["src/shared/ui/{button,dialog,select,sheet,tabs}.tsx"],
+  "ignoreExportsUsedInFile": true
+}

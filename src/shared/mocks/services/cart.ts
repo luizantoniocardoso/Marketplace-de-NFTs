@@ -123,7 +123,8 @@ export function computeQuote(cart: MockCart): QuoteDto {
 
   const issues = items.flatMap((item) => {
     if (item.status === 'unavailable') return [`${item.name} (${item.editionLabel}) esgotou.`]
-    if (item.status === 'quantity_reduced') return [`Restam apenas ${item.available} unidades de ${item.name} (${item.editionLabel}).`]
+    if (item.status === 'quantity_reduced')
+      return [`Restam apenas ${item.available} unidades de ${item.name} (${item.editionLabel}).`]
     if (item.status === 'price_changed') return [`O preço de ${item.name} (${item.editionLabel}) mudou.`]
     return []
   })

@@ -1,9 +1,8 @@
-import { useId, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { getApiError } from '@/shared/api'
 import type { UserDto } from '@/shared/contracts'
-import { applyFieldErrors, standardResolver } from '@/shared/lib'
-import { Button, Field, fieldDescribedBy, PasswordInput, TextInput } from '@/shared/ui'
+import { standardResolver, useFormFields, useServerErrors } from '@/shared/lib'
+import { Button, Field, FormError, PasswordInput, TextInput } from '@/shared/ui'
 import { registerSchema, useRegister, type RegisterValues } from '../model'
 
 interface RegisterFormProps {
@@ -12,88 +11,44 @@ interface RegisterFormProps {
 }
 
 export function RegisterForm({ onSuccess, submitLabel = 'Criar conta' }: RegisterFormProps) {
-  const id = useId()
-  const [formError, setFormError] = useState<string>()
   const registerMutation = useRegister()
-  const {
-    register,
-    handleSubmit,
-    setError,
-    formState: { errors },
-  } = useForm<RegisterValues>({
+  const form = useForm<RegisterValues>({
     resolver: standardResolver(registerSchema),
     defaultValues: { username: '', email: '', password: '', confirmPassword: '' },
   })
+  const fields = useFormFields(form)
+  const serverErrors = useServerErrors(form.setError, ['username', 'email', 'password'])
+  const username = fields('username')
+  const email = fields('email')
+  const password = fields('password')
+  const confirmPassword = fields('confirmPassword')
 
-  const onSubmit = handleSubmit(({ username, email, password }) => {
-    setFormError(undefined)
+  const onSubmit = form.handleSubmit(({ username, email, password }) => {
+    serverErrors.clear()
     registerMutation.mutate(
       { username, email, password },
       {
         onSuccess: (response) => onSuccess?.(response.user),
-        onError: (error) => {
-          const apiError = getApiError(error)
-          if (!applyFieldErrors(setError, apiError.fields, ['username', 'email', 'password'])) setFormError(apiError.message)
-        },
+        onError: (error) => serverErrors.report(getApiError(error)),
       },
     )
   })
 
-  const fields = {
-    username: `${id}-username`,
-    email: `${id}-email`,
-    password: `${id}-password`,
-    confirmPassword: `${id}-confirm`,
-  }
-
   return (
     <form noValidate onSubmit={onSubmit} className="flex flex-col gap-3">
-      <Field id={fields.username} label="Nome de usuário" hideLabel error={errors.username?.message}>
-        <TextInput
-          id={fields.username}
-          autoComplete="username"
-          placeholder="Nome de usuário"
-          aria-invalid={errors.username ? true : undefined}
-          aria-describedby={fieldDescribedBy(fields.username, errors.username?.message)}
-          {...register('username')}
-        />
+      <Field {...username.field} label="Nome de usuário" hideLabel>
+        <TextInput autoComplete="username" placeholder="Nome de usuário" {...username.control} />
       </Field>
-      <Field id={fields.email} label="E-mail" hideLabel error={errors.email?.message}>
-        <TextInput
-          id={fields.email}
-          type="email"
-          autoComplete="email"
-          placeholder="Digite seu e-mail"
-          aria-invalid={errors.email ? true : undefined}
-          aria-describedby={fieldDescribedBy(fields.email, errors.email?.message)}
-          {...register('email')}
-        />
+      <Field {...email.field} label="E-mail" hideLabel>
+        <TextInput type="email" autoComplete="email" placeholder="Digite seu e-mail" {...email.control} />
       </Field>
-      <Field id={fields.password} label="Senha" hideLabel error={errors.password?.message}>
-        <PasswordInput
-          id={fields.password}
-          autoComplete="new-password"
-          placeholder="Senha"
-          aria-invalid={errors.password ? true : undefined}
-          aria-describedby={fieldDescribedBy(fields.password, errors.password?.message)}
-          {...register('password')}
-        />
+      <Field {...password.field} label="Senha" hideLabel>
+        <PasswordInput autoComplete="new-password" placeholder="Senha" {...password.control} />
       </Field>
-      <Field id={fields.confirmPassword} label="Confirmar senha" hideLabel error={errors.confirmPassword?.message}>
-        <PasswordInput
-          id={fields.confirmPassword}
-          autoComplete="new-password"
-          placeholder="Confirmar senha"
-          aria-invalid={errors.confirmPassword ? true : undefined}
-          aria-describedby={fieldDescribedBy(fields.confirmPassword, errors.confirmPassword?.message)}
-          {...register('confirmPassword')}
-        />
+      <Field {...confirmPassword.field} label="Confirmar senha" hideLabel>
+        <PasswordInput autoComplete="new-password" placeholder="Confirmar senha" {...confirmPassword.control} />
       </Field>
-      {formError && (
-        <p role="alert" className="text-body text-coral">
-          {formError}
-        </p>
-      )}
+      {serverErrors.formError && <FormError>{serverErrors.formError}</FormError>}
       <Button type="submit" variant="brand" size="xl" className="mt-3 w-full" disabled={registerMutation.isPending}>
         {registerMutation.isPending ? 'Criando…' : submitLabel}
       </Button>

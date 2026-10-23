@@ -7,6 +7,7 @@ import type {
   QuoteDto,
   UpdateCartItemRequest,
 } from '@/shared/contracts'
+import { VALIDATION_MESSAGES } from '@/shared/lib'
 import {
   apiError,
   cartItemId,
@@ -52,7 +53,9 @@ export const cartHandlers = [
     if (!owner) return apiError('VALIDATION_ERROR', 'Carrinho não identificado.')
     const body = await readJson<AddCartItemRequest>(request)
     if (quantityError(body.quantity)) {
-      return apiError('VALIDATION_ERROR', 'Quantidade inválida.', { quantity: 'Informe uma quantidade inteira maior que zero.' })
+      return apiError('VALIDATION_ERROR', 'Quantidade inválida.', {
+        quantity: 'Informe uma quantidade inteira maior que zero.',
+      })
     }
     const nft = body.nftId ? findNft(body.nftId) : undefined
     const edition = nft && body.editionId ? findEdition(nft, body.editionId) : undefined
@@ -88,7 +91,9 @@ export const cartHandlers = [
     if (!item) return apiError('NOT_FOUND', 'Item não encontrado no carrinho.')
     const body = await readJson<UpdateCartItemRequest>(request)
     if (quantityError(body.quantity)) {
-      return apiError('VALIDATION_ERROR', 'Quantidade inválida.', { quantity: 'Informe uma quantidade inteira maior que zero.' })
+      return apiError('VALIDATION_ERROR', 'Quantidade inválida.', {
+        quantity: 'Informe uma quantidade inteira maior que zero.',
+      })
     }
     const nft = findNft(item.nftId)
     const edition = nft && findEdition(nft, item.editionId)
@@ -141,11 +146,21 @@ export const cartHandlers = [
     const cart = getCart(cartOwner(request))
     const body = await readJson<ApplyCouponRequest>(request)
     const code = body.code?.trim() ?? ''
-    if (!code) return apiError('VALIDATION_ERROR', 'Informe um código promocional.', { code: 'Informe um código promocional.' })
-    if (!cart.items.length) return apiError('VALIDATION_ERROR', 'Adicione itens antes de aplicar um cupom.', { code: 'Seu carrinho está vazio.' })
+    if (!code)
+      return apiError('VALIDATION_ERROR', VALIDATION_MESSAGES.couponRequired, {
+        code: VALIDATION_MESSAGES.couponRequired,
+      })
+    if (!cart.items.length)
+      return apiError('VALIDATION_ERROR', 'Adicione itens antes de aplicar um cupom.', {
+        code: 'Seu carrinho está vazio.',
+      })
     const coupon = findCoupon(code)
-    if (!coupon) return apiError('COUPON_INVALID', 'Código promocional inválido.', { code: 'Código promocional inválido.' })
-    if (isCouponExpired(code)) return apiError('COUPON_EXPIRED', 'Este código promocional expirou.', { code: 'Este código promocional expirou.' })
+    if (!coupon)
+      return apiError('COUPON_INVALID', 'Código promocional inválido.', { code: 'Código promocional inválido.' })
+    if (isCouponExpired(code))
+      return apiError('COUPON_EXPIRED', 'Este código promocional expirou.', {
+        code: 'Este código promocional expirou.',
+      })
     cart.couponCode = coupon.code
     touch(cart)
     return HttpResponse.json<CartDto>(toCartDto(cart))

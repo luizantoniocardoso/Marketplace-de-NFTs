@@ -7,28 +7,28 @@ import {
   type WalletDto,
   type WalletProvider,
 } from '@/shared/contracts'
-import { isWalletAddress, rules, splitEnsName } from '@/shared/lib'
+import { isWalletAddress, rules, splitEnsName, VALIDATION_MESSAGES as MESSAGES } from '@/shared/lib'
 
 const isNetwork = (value: string): value is NftNetwork => (NFT_NETWORKS as readonly string[]).includes(value)
 const isProvider = (value: string): value is WalletProvider => (WALLET_PROVIDERS as readonly string[]).includes(value)
 
 export const walletSchema = z
   .object({
-    displayName: rules.required('Informe o nome de exibição.'),
+    displayName: rules.required(MESSAGES.displayNameRequired),
     handle: rules.required('Preencha este campo.'),
-    network: z.string().check(z.refine(isNetwork, { error: 'Selecione uma rede.' })),
-    profileName: rules.required('Informe o nome do perfil.'),
-    address: rules.required('Informe o endereço da carteira.'),
+    network: z.string().check(z.refine(isNetwork, { error: MESSAGES.networkRequired })),
+    profileName: rules.required(MESSAGES.profileNameRequired),
+    address: rules.required(MESSAGES.addressRequired),
     secondaryAddress: z.string().check(z.trim()),
-    provider: z.string().check(z.refine(isProvider, { error: 'Selecione o tipo de carteira.' })),
-    referralCode: rules.required('Informe o código de indicação.'),
+    provider: z.string().check(z.refine(isProvider, { error: MESSAGES.providerRequired })),
+    referralCode: rules.required(MESSAGES.referralCodeRequired),
     email: rules.email(),
     ensSuffix: rules.ensSuffix(),
     ensLabel: rules.ensLabel(),
   })
   .check(
     z.refine((values) => !isNetwork(values.network) || isWalletAddress(values.address, values.network), {
-      error: 'Endereço inválido para a rede selecionada.',
+      error: MESSAGES.addressInvalid,
       path: ['address'],
     }),
     z.refine(
@@ -36,7 +36,7 @@ export const walletSchema = z
         !values.secondaryAddress ||
         values.secondaryAddress.endsWith('.eth') ||
         (isNetwork(values.network) && isWalletAddress(values.secondaryAddress, values.network)),
-      { error: 'Informe um ENS ou endereço válido.', path: ['secondaryAddress'] },
+      { error: MESSAGES.secondaryAddressInvalid, path: ['secondaryAddress'] },
     ),
   )
 

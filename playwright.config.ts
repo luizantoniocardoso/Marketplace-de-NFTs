@@ -19,6 +19,7 @@ export default defineConfig({
     timezoneId: 'America/Sao_Paulo',
   },
   expect: {
+    timeout: 15_000,
     toHaveScreenshot: { animations: 'disabled', maxDiffPixelRatio: 0.01 },
   },
   projects: [

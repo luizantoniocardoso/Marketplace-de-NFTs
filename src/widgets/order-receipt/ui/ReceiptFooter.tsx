@@ -33,7 +33,8 @@ export function ReceiptFooter({ order }: { order: OrderDto }) {
   if (order.status === 'pending') {
     return (
       <p className="px-6 py-6 text-center text-body text-text-secondary">
-        Estamos aguardando a confirmação na {network}. Você pode recarregar ou sair desta página: o pedido não será criado de novo.
+        Estamos aguardando a confirmação na {network}. Você pode recarregar ou sair desta página: o pedido não será
+        criado de novo.
       </p>
     )
   }
@@ -41,7 +42,8 @@ export function ReceiptFooter({ order }: { order: OrderDto }) {
   return (
     <div className="flex flex-col items-center gap-5 px-6 py-6 text-center sm:px-14">
       <p className="text-body text-text-secondary">
-        Transação confirmada na {network}. A propriedade foi transferida para sua carteira conectada e registrada na rede.
+        Transação confirmada na {network}. A propriedade foi transferida para sua carteira conectada e registrada na
+        rede.
       </p>
       {order.explorerUrl && (
         <Button asChild variant="brand" size="xl" className="h-12 px-4 text-body-lg">

@@ -40,7 +40,9 @@ export function ProviderOptions({ value, onChange, variant, error }: ProviderOpt
             >
               <RadioGroupItem id={itemId} value={provider} className={variant === 'card' ? 'order-last' : undefined} />
               {variant === 'card' && <WalletProviderIcon provider={provider} />}
-              <span className={cn('text-body text-foreground', variant === 'card' && 'mr-auto')}>{WALLET_PROVIDER_LABELS[provider]}</span>
+              <span className={cn('text-body text-foreground', variant === 'card' && 'mr-auto')}>
+                {WALLET_PROVIDER_LABELS[provider]}
+              </span>
             </label>
           )
         })}

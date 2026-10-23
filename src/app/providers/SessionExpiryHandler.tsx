@@ -16,7 +16,11 @@ export function SessionExpiryHandler() {
       onAuthFailure((code) => {
         if (!viewer.getId()) return
         endSession(queryClient)
-        toast.error(code === 'SESSION_EXPIRED' ? 'Sua sessão expirou. Entre novamente para continuar.' : 'Sua sessão não é mais válida.')
+        toast.error(
+          code === 'SESSION_EXPIRED'
+            ? 'Sua sessão expirou. Entre novamente para continuar.'
+            : 'Sua sessão não é mais válida.',
+        )
         const { matches, location } = router.state
         if (matches.some((match) => match.routeId.startsWith(PRIVATE_ROUTE_PREFIX))) {
           void router.navigate({ to: '/login', search: { redirect: location.href, reason: 'expired' } })

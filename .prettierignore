@@ -1,0 +1,10 @@
+dist
+coverage
+playwright-report
+test-results
+lighthouse-reports
+tests/e2e/**/*-snapshots
+public/mockServiceWorker.js
+src/app/router/routeTree.gen.ts
+package-lock.json
+.tanstack

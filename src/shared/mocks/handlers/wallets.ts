@@ -28,7 +28,9 @@ export const walletHandlers = [
     const auth = authenticate(request)
     if (auth.error) return auth.error
     const wallets = db.data.wallets.filter((wallet) => wallet.userId === auth.user.id).map(toWalletDto)
-    return HttpResponse.json<WalletDto[]>(wallets.sort((a, b) => WALLET_SLOTS.indexOf(a.slot) - WALLET_SLOTS.indexOf(b.slot)))
+    return HttpResponse.json<WalletDto[]>(
+      wallets.sort((a, b) => WALLET_SLOTS.indexOf(a.slot) - WALLET_SLOTS.indexOf(b.slot)),
+    )
   }),
 
   http.put(`${env.API_URL}/wallets/:slot`, async ({ request, params }) => {
@@ -46,9 +48,13 @@ export const walletHandlers = [
     if (slot === 'secondary' && !owned.some((wallet) => wallet.slot === 'primary')) {
       return apiError('CONFLICT', 'Cadastre a carteira principal antes da secundária.')
     }
-    const duplicate = owned.find((wallet) => wallet.slot !== slot && wallet.address.toLowerCase() === body.address!.trim().toLowerCase())
+    const duplicate = owned.find(
+      (wallet) => wallet.slot !== slot && wallet.address.toLowerCase() === body.address!.trim().toLowerCase(),
+    )
     if (duplicate && slot === 'primary') {
-      return apiError('CONFLICT', 'Este endereço já está cadastrado na carteira secundária.', { address: 'Endereço já usado na outra carteira.' })
+      return apiError('CONFLICT', 'Este endereço já está cadastrado na carteira secundária.', {
+        address: 'Endereço já usado na outra carteira.',
+      })
     }
 
     const data = {
@@ -77,7 +83,9 @@ export const walletHandlers = [
     if (failure) return failure
     const auth = authenticate(request)
     if (auth.error) return auth.error
-    return HttpResponse.json<{ connection: WalletConnectionDto | null }>({ connection: db.data.connections[auth.user.id] ?? null })
+    return HttpResponse.json<{ connection: WalletConnectionDto | null }>({
+      connection: db.data.connections[auth.user.id] ?? null,
+    })
   }),
 
   http.post(`${env.API_URL}/wallet-connection`, async ({ request }) => {
@@ -88,7 +96,8 @@ export const walletHandlers = [
     const body = await readJson<ConnectWalletRequest>(request)
     const wallet = db.data.wallets.find((item) => item.id === body.walletId && item.userId === auth.user.id)
     if (!wallet) return apiError('NOT_FOUND', 'Carteira não encontrada.')
-    if (!body.provider || !WALLET_PROVIDERS.includes(body.provider)) return apiError('VALIDATION_ERROR', 'Selecione o tipo de carteira.')
+    if (!body.provider || !WALLET_PROVIDERS.includes(body.provider))
+      return apiError('VALIDATION_ERROR', 'Selecione o tipo de carteira.')
     if (!body.network || !NFT_NETWORKS.includes(body.network)) return apiError('VALIDATION_ERROR', 'Selecione a rede.')
     await delay(CONNECTION_DELAY_MS)
     if (isScenario('wallet-rejected')) return apiError('WALLET_REJECTED', 'A conexão foi recusada na carteira.')

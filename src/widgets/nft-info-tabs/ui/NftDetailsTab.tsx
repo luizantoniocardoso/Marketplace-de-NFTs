@@ -3,7 +3,10 @@ import { shortenAddress } from '@/shared/lib'
 
 export function NftDetailsTab({ nft }: { nft: NftDetailDto }) {
   const facts = [
-    { term: 'Rede', value: `Cunhado na ${NFT_NETWORK_LABELS[nft.network]} com procedência imutável e metadados armazenados no IPFS.` },
+    {
+      term: 'Rede',
+      value: `Cunhado na ${NFT_NETWORK_LABELS[nft.network]} com procedência imutável e metadados armazenados no IPFS.`,
+    },
     {
       term: 'Contrato',
       value: `Direitos autorais do criador: ${nft.contract.royaltyPercent}% nas vendas secundárias, pagos automaticamente pelos mercados compatíveis.`,

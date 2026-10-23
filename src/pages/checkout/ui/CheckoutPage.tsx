@@ -17,7 +17,12 @@ export function CheckoutPage() {
   const content = () => {
     if (cart.isPending || wallets.isPending || profile.isPending) return <CheckoutSkeleton />
     if (cart.isError || wallets.isError || profile.isError) {
-      return <CheckoutBlocked reason="error" onRetry={() => void Promise.all([cart.refetch(), wallets.refetch(), profile.refetch()])} />
+      return (
+        <CheckoutBlocked
+          reason="error"
+          onRetry={() => void Promise.all([cart.refetch(), wallets.refetch(), profile.refetch()])}
+        />
+      )
     }
     if (!cart.data.items.length) return <CheckoutBlocked reason="empty-cart" />
     if (!wallets.data.length) return <CheckoutBlocked reason="no-wallet" />

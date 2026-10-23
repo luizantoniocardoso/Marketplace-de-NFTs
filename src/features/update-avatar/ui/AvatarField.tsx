@@ -36,7 +36,14 @@ export function AvatarField({ user }: { user: UserDto }) {
             if (!message) upload.mutate(file)
           }}
         />
-        <Button type="button" variant="brand" size="md" className="w-[98px]" disabled={busy} onClick={() => inputRef.current?.click()}>
+        <Button
+          type="button"
+          variant="brand"
+          size="md"
+          className="w-[98px]"
+          disabled={busy}
+          onClick={() => inputRef.current?.click()}
+        >
           {upload.isPending ? 'Enviando…' : 'Alterar'}
         </Button>
         <button

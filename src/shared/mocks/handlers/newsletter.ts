@@ -1,7 +1,8 @@
 import { http } from 'msw'
 import { env } from '@/shared/config'
 import type { NewsletterSubscribeRequest } from '@/shared/contracts'
-import { apiError, EMAIL_PATTERN, noContent, readJson, simulateNetwork } from '../services'
+import { EMAIL_PATTERN, VALIDATION_MESSAGES } from '@/shared/lib'
+import { apiError, noContent, readJson, simulateNetwork } from '../services'
 
 export const newsletterHandlers = [
   http.post(`${env.API_URL}/newsletter`, async ({ request }) => {
@@ -9,7 +10,7 @@ export const newsletterHandlers = [
     if (failure) return failure
     const body = await readJson<NewsletterSubscribeRequest>(request)
     if (!body.email || !EMAIL_PATTERN.test(body.email)) {
-      return apiError('VALIDATION_ERROR', 'Informe um e-mail válido', { email: 'Informe um e-mail válido' })
+      return apiError('VALIDATION_ERROR', VALIDATION_MESSAGES.emailInvalid, { email: VALIDATION_MESSAGES.emailInvalid })
     }
     return noContent()
   }),

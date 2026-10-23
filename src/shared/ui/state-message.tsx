@@ -10,7 +10,15 @@ interface StateMessageProps extends Omit<ComponentProps<'div'>, 'title'> {
   action?: ReactNode
 }
 
-function StateMessage({ icon: Icon, iconClassName, title, description, action, className, ...props }: StateMessageProps) {
+function StateMessage({
+  icon: Icon,
+  iconClassName,
+  title,
+  description,
+  action,
+  className,
+  ...props
+}: StateMessageProps) {
   return (
     <div
       data-slot="state-message"

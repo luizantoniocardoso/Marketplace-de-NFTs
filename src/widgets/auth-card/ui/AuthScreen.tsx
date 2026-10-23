@@ -39,7 +39,11 @@ export function AuthScreen({ mode, onModeChange, onSuccess, onClose, notice, swi
           <X className="size-5" aria-hidden="true" />
         </button>
 
-        <Link to="/" aria-label="Kurio, página inicial" className="mx-auto text-[32px] leading-10 text-foreground md:hidden">
+        <Link
+          to="/"
+          aria-label="Kurio, página inicial"
+          className="mx-auto text-[32px] leading-10 text-foreground md:hidden"
+        >
           <Logo />
         </Link>
         <h1 id="auth-title" className="mt-[86px] text-center text-title font-bold text-foreground md:sr-only">

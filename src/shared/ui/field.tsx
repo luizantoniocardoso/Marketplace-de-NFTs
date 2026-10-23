@@ -1,3 +1,4 @@
+import { ENS_SUFFIXES } from '@/shared/contracts'
 import { cn } from '@/shared/lib'
 import { ChevronDown, Eye, EyeOff } from 'lucide-react'
 import { useState, type ComponentProps, type ReactNode } from 'react'
@@ -14,10 +15,6 @@ interface FieldProps {
   hideLabel?: boolean
   className?: string
   children: ReactNode
-}
-
-function fieldDescribedBy(id: string, error?: string, hint?: ReactNode) {
-  return [error ? `${id}-error` : null, hint ? `${id}-hint` : null].filter(Boolean).join(' ') || undefined
 }
 
 function Field({ id, label, required, error, hint, hideLabel, className, children }: FieldProps) {
@@ -87,10 +84,33 @@ function SelectInput({ className, children, ...props }: ComponentProps<'select'>
       </select>
       <ChevronDown
         aria-hidden="true"
-        className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-text-secondary"
+        className="pointer-events-none absolute top-1/2 right-2.5 size-4 -translate-y-1/2 text-text-secondary"
       />
     </div>
   )
 }
 
-export { Field, fieldDescribedBy, PasswordInput, SelectInput, TextArea, TextInput }
+interface EnsNameInputProps extends ComponentProps<'input'> {
+  suffixProps: ComponentProps<'select'>
+}
+
+function EnsNameInput({ suffixProps, className, ...props }: EnsNameInputProps) {
+  return (
+    <div className="flex gap-2.5">
+      <SelectInput aria-label="Domínio ENS" className="w-auto min-w-[78px] pr-8 pl-2.5" {...suffixProps}>
+        {ENS_SUFFIXES.map((suffix) => (
+          <option key={suffix} value={suffix}>
+            {suffix}
+          </option>
+        ))}
+      </SelectInput>
+      <TextInput autoComplete="off" className={cn('flex-1', className)} {...props} />
+    </div>
+  )
+}
+
+function FormError({ className, ...props }: ComponentProps<'p'>) {
+  return <p role="alert" className={cn('text-body text-coral', className)} {...props} />
+}
+
+export { EnsNameInput, Field, FormError, PasswordInput, SelectInput, TextArea, TextInput }

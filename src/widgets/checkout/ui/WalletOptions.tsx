@@ -29,7 +29,10 @@ export function WalletOptions({ wallets, selectedId, onSelect }: WalletOptionsPr
         return (
           <div
             key={wallet.id}
-            className={cn('flex items-start gap-4 rounded-[12px] bg-surface-card px-4 py-3.5', wallet.id === selectedId && 'ring-1 ring-brand')}
+            className={cn(
+              'flex items-start gap-4 rounded-[12px] bg-surface-card px-4 py-3.5',
+              wallet.id === selectedId && 'ring-1 ring-brand',
+            )}
           >
             <RadioGroupItem id={itemId} value={wallet.id} className="mt-5" />
             <label htmlFor={itemId} className="flex-1 cursor-pointer">

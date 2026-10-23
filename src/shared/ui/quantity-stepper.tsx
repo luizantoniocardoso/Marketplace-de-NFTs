@@ -28,7 +28,11 @@ function QuantityStepper({
   )
 
   return (
-    <div role="group" aria-label={label} className={cn('flex items-center', size === 'lg' ? 'gap-3' : 'gap-2.5', className)}>
+    <div
+      role="group"
+      aria-label={label}
+      className={cn('flex items-center', size === 'lg' ? 'gap-3' : 'gap-2.5', className)}
+    >
       <button
         type="button"
         className={buttonClass}
@@ -38,7 +42,10 @@ function QuantityStepper({
       >
         <Minus className={size === 'lg' ? 'size-5' : 'size-3'} strokeWidth={3} aria-hidden="true" />
       </button>
-      <output aria-live="polite" className={cn('min-w-4 text-center text-foreground', size === 'lg' ? 'text-body-lg' : 'text-body-md')}>
+      <output
+        aria-live="polite"
+        className={cn('min-w-4 text-center text-foreground', size === 'lg' ? 'text-body-lg' : 'text-body-md')}
+      >
         {value}
       </output>
       <button

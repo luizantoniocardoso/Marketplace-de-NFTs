@@ -1,5 +1,5 @@
 import { Search, X } from 'lucide-react'
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { SearchField } from '@/features/search-nfts'
 import { useClickOutside } from '@/shared/lib'
 import { useHeaderSearch } from '../model'
@@ -10,10 +10,15 @@ export function HeaderSearch() {
   const [open, setOpen] = useState(false)
   const buttonRef = useRef<HTMLButtonElement>(null)
   const panelRef = useRef<HTMLDivElement>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
   const { query, search } = useHeaderSearch()
 
   const close = useCallback(() => setOpen(false), [])
   useClickOutside([buttonRef, panelRef], close, open)
+
+  useEffect(() => {
+    if (open) inputRef.current?.focus()
+  }, [open])
 
   return (
     <>
@@ -30,16 +35,19 @@ export function HeaderSearch() {
       </button>
 
       {open && (
-        <div ref={panelRef} id={PANEL_ID} className="page-container absolute inset-x-0 top-[68px]">
-          <div
-            className="ml-auto w-full max-w-sm rounded-b-lg border border-t-0 border-border bg-surface-card p-3 shadow-xl"
-            onKeyDown={(event) => {
-              if (event.key !== 'Escape') return
-              close()
-              buttonRef.current?.focus()
-            }}
-          >
-            <SearchField value={query} onSearch={search} autoFocus className="bg-ink" />
+        <div ref={panelRef} id={PANEL_ID} className="absolute inset-x-0 top-[68px] page-container">
+          <div className="ml-auto w-full max-w-sm rounded-b-lg border border-t-0 border-border bg-surface-card p-3 shadow-xl">
+            <SearchField
+              ref={inputRef}
+              value={query}
+              onSearch={search}
+              className="bg-ink"
+              onKeyDown={(event) => {
+                if (event.key !== 'Escape') return
+                close()
+                buttonRef.current?.focus()
+              }}
+            />
           </div>
         </div>
       )}

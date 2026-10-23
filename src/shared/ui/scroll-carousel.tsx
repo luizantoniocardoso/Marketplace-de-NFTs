@@ -41,11 +41,17 @@ function ScrollCarousel({ label, children, className, listClassName }: ScrollCar
   }
 
   return (
-    <div data-slot="scroll-carousel" role="region" aria-roledescription="carrossel" aria-label={label} className={className}>
+    <div
+      data-slot="scroll-carousel"
+      role="region"
+      aria-roledescription="carrossel"
+      aria-label={label}
+      className={className}
+    >
       <ul
         ref={listRef}
         className={cn(
-          'flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth [scrollbar-width:none] md:gap-[25px] [&::-webkit-scrollbar]:hidden',
+          'flex snap-x snap-mandatory [scrollbar-width:none] gap-4 overflow-x-auto scroll-smooth md:gap-[25px] [&::-webkit-scrollbar]:hidden',
           listClassName,
         )}
       >

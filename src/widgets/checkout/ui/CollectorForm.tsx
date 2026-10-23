@@ -28,7 +28,7 @@ export function CollectorForm({ checkout, className }: CollectorFormProps) {
             id={`${id}-other`}
             checked={usingOther}
             onCheckedChange={() => checkout.selectWallet(otherWallet)}
-            className="rounded-full border-brand data-checked:bg-brand"
+            variant="brand"
           />
           Usar outra carteira? <span className="text-text-secondary">({otherWallet.nickname})</span>
         </label>

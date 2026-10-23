@@ -17,7 +17,8 @@ export function useToggleFavorite() {
 
   return useMutation({
     mutationKey: ['toggle-favorite'],
-    mutationFn: ({ nftId, favorite }: ToggleFavoriteVariables) => (favorite ? addFavorite(nftId) : removeFavorite(nftId)),
+    mutationFn: ({ nftId, favorite }: ToggleFavoriteVariables) =>
+      favorite ? addFavorite(nftId) : removeFavorite(nftId),
     onMutate: async ({ nftId, favorite }) => {
       await queryClient.cancelQueries({ queryKey: key })
       const previous = queryClient.getQueryData<FavoritesDto>(key)

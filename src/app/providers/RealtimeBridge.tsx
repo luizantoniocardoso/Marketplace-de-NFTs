@@ -75,18 +75,18 @@ export function RealtimeBridge() {
     void whenApiReady()
       .then(loadSocket)
       .then((socket) => {
-      if (cancelled) return
-      socket.on('connect', onConnect)
-      socket.on(REALTIME_EVENTS.nftUpdated, onNftUpdated)
-      socket.on(REALTIME_EVENTS.orderUpdated, onOrderUpdated)
-      socket.connect()
-      release = () => {
-        socket.off('connect', onConnect)
-        socket.off(REALTIME_EVENTS.nftUpdated, onNftUpdated)
-        socket.off(REALTIME_EVENTS.orderUpdated, onOrderUpdated)
-        socket.disconnect()
-      }
-    })
+        if (cancelled) return
+        socket.on('connect', onConnect)
+        socket.on(REALTIME_EVENTS.nftUpdated, onNftUpdated)
+        socket.on(REALTIME_EVENTS.orderUpdated, onOrderUpdated)
+        socket.connect()
+        release = () => {
+          socket.off('connect', onConnect)
+          socket.off(REALTIME_EVENTS.nftUpdated, onNftUpdated)
+          socket.off(REALTIME_EVENTS.orderUpdated, onOrderUpdated)
+          socket.disconnect()
+        }
+      })
 
     return () => {
       cancelled = true

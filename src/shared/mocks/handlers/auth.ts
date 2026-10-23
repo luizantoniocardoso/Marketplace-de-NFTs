@@ -1,6 +1,7 @@
 import { http, HttpResponse } from 'msw'
 import { env } from '@/shared/config'
 import type { AuthResponse, LoginRequest, RegisterRequest, SessionDto } from '@/shared/contracts'
+import { EMAIL_PATTERN, MIN_PASSWORD_LENGTH, USERNAME_PATTERN, VALIDATION_MESSAGES as MESSAGES } from '@/shared/lib'
 import { db } from '../db'
 import type { MockUser } from '../fixtures'
 import {
@@ -17,9 +18,7 @@ import {
   simulateNetwork,
   toUserDto,
 } from '../services'
-import { EMAIL_PATTERN, USERNAME_PATTERN, type FieldErrors } from '../services'
-
-const MIN_PASSWORD = 8
+import type { FieldErrors } from '../services'
 
 function authResponse(request: Request, user: MockUser, status: number) {
   mergeGuestCart(request, user.id)
@@ -38,16 +37,18 @@ export const authHandlers = [
     const username = body.username?.trim().toLowerCase() ?? ''
     const email = body.email?.trim().toLowerCase() ?? ''
     const fields: FieldErrors = {}
-    if (!USERNAME_PATTERN.test(username)) fields.username = 'Use de 3 a 20 letras minúsculas, números, ponto ou _.'
-    if (!EMAIL_PATTERN.test(email)) fields.email = 'Informe um e-mail válido.'
-    if (!body.password || body.password.length < MIN_PASSWORD) fields.password = 'A senha precisa ter ao menos 8 caracteres.'
+    if (!USERNAME_PATTERN.test(username)) fields.username = MESSAGES.usernameInvalid
+    if (!EMAIL_PATTERN.test(email)) fields.email = MESSAGES.emailInvalid
+    if (!body.password || body.password.length < MIN_PASSWORD_LENGTH) fields.password = MESSAGES.passwordTooShort
     if (Object.keys(fields).length) return apiError('VALIDATION_ERROR', 'Revise os campos destacados.', fields)
 
     if (db.data.users.some((user) => user.email === email)) {
       return apiError('CONFLICT', 'Já existe uma conta com este e-mail.', { email: 'Este e-mail já está cadastrado.' })
     }
     if (db.data.users.some((user) => user.username === username)) {
-      return apiError('CONFLICT', 'Este nome de usuário já está em uso.', { username: 'Este nome de usuário já está em uso.' })
+      return apiError('CONFLICT', 'Este nome de usuário já está em uso.', {
+        username: 'Este nome de usuário já está em uso.',
+      })
     }
 
     const salt = randomToken('salt')
@@ -72,8 +73,8 @@ export const authHandlers = [
     if (failure) return failure
     const body = await readJson<LoginRequest>(request)
     const fields: FieldErrors = {}
-    if (!body.email?.trim()) fields.email = 'Informe seu e-mail.'
-    if (!body.password) fields.password = 'Informe sua senha.'
+    if (!body.email?.trim()) fields.email = MESSAGES.emailRequired
+    if (!body.password) fields.password = MESSAGES.passwordRequired
     if (Object.keys(fields).length) return apiError('VALIDATION_ERROR', 'Revise os campos destacados.', fields)
 
     const user = db.data.users.find((item) => item.email === body.email!.trim().toLowerCase())

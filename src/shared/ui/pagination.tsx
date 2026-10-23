@@ -27,7 +27,12 @@ function Pagination({ page, totalPages, onPageChange, label, maxVisible = 5, cla
       <ul className="flex items-center gap-1.5">
         {page > 1 && (
           <li>
-            <button type="button" aria-label="Página anterior" className={itemClass} onClick={() => onPageChange(page - 1)}>
+            <button
+              type="button"
+              aria-label="Página anterior"
+              className={itemClass}
+              onClick={() => onPageChange(page - 1)}
+            >
               <ChevronLeft className="size-4" aria-hidden="true" />
             </button>
           </li>

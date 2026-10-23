@@ -12,7 +12,7 @@ export function AccountSidebar() {
         Meu perfil
       </h2>
       <nav aria-label="Conta" className="mt-1">
-        <ul className="flex overflow-x-auto [scrollbar-width:none] md:flex-col md:overflow-visible">
+        <ul className="flex [scrollbar-width:none] overflow-x-auto md:flex-col md:overflow-visible">
           {ACCOUNT_NAV_ITEMS.map((item) => (
             <li key={item.label}>
               <AccountNavLink item={item} />

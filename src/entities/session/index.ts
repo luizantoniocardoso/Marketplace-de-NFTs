@@ -1,2 +1,2 @@
-export { login, logout, register, sessionKeys, sessionQueries } from './api'
+export { login, logout, register } from './api'
 export { endSession, ensureSession, startSession, updateSessionUser, useSession } from './model'

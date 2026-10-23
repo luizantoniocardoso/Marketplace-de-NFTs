@@ -2,7 +2,7 @@ import { X } from 'lucide-react'
 import { useId, useState } from 'react'
 import { getApiError } from '@/shared/api'
 import type { CouponDto } from '@/shared/contracts'
-import { cn } from '@/shared/lib'
+import { cn, VALIDATION_MESSAGES } from '@/shared/lib'
 import { useApplyCoupon, useRemoveCoupon } from '../model'
 
 interface CouponFormProps {
@@ -22,7 +22,12 @@ export function CouponForm({ coupon, variant = 'box', disabled, className }: Cou
 
   if (coupon) {
     return (
-      <div className={cn('flex items-center justify-between gap-3 rounded-[4px] border border-brand/60 px-3 py-2', className)}>
+      <div
+        className={cn(
+          'flex items-center justify-between gap-3 rounded-[4px] border border-brand/60 px-3 py-2',
+          className,
+        )}
+      >
         <p className="text-body text-foreground">
           <span className="font-bold text-text-accent">{coupon.code}</span>
           <span className="block text-caption text-text-secondary">{coupon.description}</span>
@@ -48,7 +53,7 @@ export function CouponForm({ coupon, variant = 'box', disabled, className }: Cou
         event.preventDefault()
         setError(undefined)
         if (!code.trim()) {
-          setError('Informe um código promocional.')
+          setError(VALIDATION_MESSAGES.couponRequired)
           return
         }
         apply.mutate(code.trim(), {
@@ -66,7 +71,9 @@ export function CouponForm({ coupon, variant = 'box', disabled, className }: Cou
       <div
         className={cn(
           'flex overflow-hidden',
-          pill ? 'h-[50px] rounded-full border border-border bg-ink' : 'mt-3 h-10 rounded-[2px] border border-border-soft',
+          pill
+            ? 'h-[50px] rounded-full border border-border bg-ink'
+            : 'mt-3 h-10 rounded-[2px] border border-border-soft',
         )}
       >
         <input

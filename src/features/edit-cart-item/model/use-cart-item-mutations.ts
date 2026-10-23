@@ -32,7 +32,9 @@ export function useUpdateCartItem() {
     onMutate: ({ item, quantity }) =>
       cache.patch((cart) => {
         const items = cart.items.map((entry) =>
-          entry.id === item.id ? { ...entry, quantity, lineTotalEth: multiplyEth(entry.unitPriceEth, quantity) } : entry,
+          entry.id === item.id
+            ? { ...entry, quantity, lineTotalEth: multiplyEth(entry.unitPriceEth, quantity) }
+            : entry,
         )
         return { ...cart, items, itemCount: items.reduce((sum, entry) => sum + entry.quantity, 0) }
       }),

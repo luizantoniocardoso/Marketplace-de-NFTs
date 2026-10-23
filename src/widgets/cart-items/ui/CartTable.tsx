@@ -61,7 +61,9 @@ export function CartTable({ items }: { items?: CartItemDto[] }) {
                   <CartItemQuantity item={item} />
                   <span className="mt-1 block text-caption text-text-secondary">Edição {item.editionLabel}</span>
                 </td>
-                <td className={`${cellClass} text-body-md font-medium text-text-accent`}>{formatEth(item.lineTotalEth)}</td>
+                <td className={`${cellClass} text-body-md font-medium text-text-accent`}>
+                  {formatEth(item.lineTotalEth)}
+                </td>
                 <td className={`${cellClass} text-center`}>
                   <RemoveCartItemButton item={item} className="mx-auto" />
                 </td>

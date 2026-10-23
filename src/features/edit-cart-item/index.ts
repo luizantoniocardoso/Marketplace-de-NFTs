@@ -1,2 +1,2 @@
-export { useAcknowledgeCartChanges, useRemoveCartItem, useUpdateCartItem } from './model'
+export { useAcknowledgeCartChanges } from './model'
 export { CartItemQuantity, RemoveCartItemButton } from './ui'

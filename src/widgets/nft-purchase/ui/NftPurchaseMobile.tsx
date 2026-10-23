@@ -27,7 +27,12 @@ export function NftPurchaseMobile({ nft, purchase }: NftPurchaseMobileProps) {
           </p>
         </div>
         <p className="mt-3 text-body leading-6 text-text-secondary">{nft.description}</p>
-        <EditionPicker className="mt-3" editions={nft.editions} value={purchase.edition.id} onChange={purchase.selectEdition} />
+        <EditionPicker
+          className="mt-3"
+          editions={nft.editions}
+          value={purchase.edition.id}
+          onChange={purchase.selectEdition}
+        />
         <NftMetaList nft={nft} className="mt-5" />
       </div>
 

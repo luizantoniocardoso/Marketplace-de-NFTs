@@ -2,7 +2,10 @@ import { Skeleton } from '@/shared/ui'
 
 export function CheckoutSkeleton() {
   return (
-    <div aria-busy="true" className="flex flex-col gap-10 lg:grid lg:grid-cols-[minmax(0,763px)_405px] lg:justify-between">
+    <div
+      aria-busy="true"
+      className="flex flex-col gap-10 lg:grid lg:grid-cols-[minmax(0,763px)_405px] lg:justify-between"
+    >
       <p role="status" className="sr-only">
         Preparando o pagamento
       </p>

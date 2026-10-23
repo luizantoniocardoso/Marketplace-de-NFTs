@@ -16,7 +16,12 @@ export function SummaryRow({ label, value, hint, emphasis, loading, className }:
     <div className={cn('flex flex-col', className)}>
       <div className="flex items-center justify-between gap-4">
         <dt className={cn('text-body text-foreground', emphasis && 'font-bold')}>{label}</dt>
-        <dd className={cn('text-right text-foreground', emphasis ? 'text-body-lg font-bold text-text-accent' : 'text-body-md')}>
+        <dd
+          className={cn(
+            'text-right text-foreground',
+            emphasis ? 'text-body-lg font-bold text-text-accent' : 'text-body-md',
+          )}
+        >
           {loading ? <Skeleton className="h-5 w-24" /> : value}
         </dd>
       </div>

@@ -24,5 +24,7 @@ export function hasActiveFilters(search: CatalogSearch) {
 }
 
 export function countActiveFilters(search: CatalogSearch) {
-  return (search.collections?.length ?? 0) + (search.networks?.length ?? 0) + (search.minPrice || search.maxPrice ? 1 : 0)
+  return (
+    (search.collections?.length ?? 0) + (search.networks?.length ?? 0) + (search.minPrice || search.maxPrice ? 1 : 0)
+  )
 }

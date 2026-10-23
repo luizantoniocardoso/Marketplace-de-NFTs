@@ -25,8 +25,7 @@ const MAX_PAGE_SIZE = 48
 const NEW_RELEASE_WINDOW_DAYS = 14
 const TRENDING_SCORE = 70
 
-const normalize = (value: string) =>
-  value.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim()
+const normalize = (value: string) => value.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim()
 
 interface Filters {
   q: string
@@ -79,7 +78,8 @@ export const nftHandlers = [
     if (!NFT_SORTS.includes(sort)) fields.sort = 'Ordenação inválida'
     if (!NFT_TABS.includes(tab)) fields.tab = 'Aba inválida'
     if (!Number.isInteger(page) || page < 1) fields.page = 'Página inválida'
-    if (!Number.isInteger(pageSize) || pageSize < 1 || pageSize > MAX_PAGE_SIZE) fields.pageSize = 'Tamanho de página inválido'
+    if (!Number.isInteger(pageSize) || pageSize < 1 || pageSize > MAX_PAGE_SIZE)
+      fields.pageSize = 'Tamanho de página inválido'
     if (collections.some((c) => !NFT_COLLECTIONS.includes(c))) fields.collections = 'Coleção inválida'
     if (networks.some((n) => !NFT_NETWORKS.includes(n))) fields.networks = 'Rede inválida'
     if (minPrice && !isEthAmount(minPrice)) fields.minPrice = 'Preço mínimo inválido'

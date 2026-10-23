@@ -18,7 +18,10 @@ export function AuthModeTabs({ mode, onModeChange }: AuthModeTabsProps) {
             type="button"
             aria-pressed={mode === item}
             onClick={() => onModeChange(item)}
-            className={cn('transition-colors hover:text-text-accent', mode === item ? 'text-text-accent' : 'text-foreground')}
+            className={cn(
+              'transition-colors hover:text-text-accent',
+              mode === item ? 'text-text-accent' : 'text-foreground',
+            )}
           >
             {AUTH_COPY[item].tab}
           </button>

@@ -16,7 +16,7 @@ export function CartPage() {
         <h1 className="sr-only max-md:hidden">Carrinho de NFTs</h1>
         <div className="mt-5 md:mt-3 lg:grid lg:grid-cols-[minmax(0,782px)_332px] lg:justify-between lg:gap-10">
           <CartItems />
-          <div className="lg:pt-0 md:mt-10 lg:mt-0">
+          <div className="md:mt-10 lg:mt-0 lg:pt-0">
             <CartSummary />
           </div>
         </div>

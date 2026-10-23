@@ -13,8 +13,17 @@ export function AuthDialogHost() {
     <Suspense>
       <AuthDialog
         mode={mode}
-        onModeChange={(next) => void navigate({ to: '.', search: (prev) => ({ ...prev, auth: next }), replace: true, resetScroll: false })}
-        onClose={() => void navigate({ to: '.', search: (prev) => ({ ...prev, auth: undefined }), replace: true, resetScroll: false })}
+        onModeChange={(next) =>
+          void navigate({ to: '.', search: (prev) => ({ ...prev, auth: next }), replace: true, resetScroll: false })
+        }
+        onClose={() =>
+          void navigate({
+            to: '.',
+            search: (prev) => ({ ...prev, auth: undefined }),
+            replace: true,
+            resetScroll: false,
+          })
+        }
       />
     </Suspense>
   )

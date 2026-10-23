@@ -10,7 +10,10 @@ const triggerClass =
 export function NftInfoTabs({ nft, className }: { nft: NftDetailDto; className?: string }) {
   return (
     <Tabs defaultValue="details" className={cn('gap-0', className)}>
-      <TabsList variant="line" className="h-auto w-full max-w-full justify-start gap-6 overflow-x-auto border-b border-border p-0 [scrollbar-width:none] md:gap-8">
+      <TabsList
+        variant="line"
+        className="h-auto w-full max-w-full [scrollbar-width:none] justify-start gap-6 overflow-x-auto border-b border-border p-0 md:gap-8"
+      >
         <TabsTrigger value="details" className={triggerClass}>
           Detalhes do NFT
         </TabsTrigger>

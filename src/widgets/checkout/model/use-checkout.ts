@@ -36,7 +36,10 @@ export function useCheckout(wallets: WalletDto[], profile: UserDto) {
   const [reviewedFingerprint, setReviewedFingerprint] = useState<string | null>(null)
 
   const selectedWallet: WalletDto | null =
-    wallets.find((wallet) => wallet.id === walletId) ?? wallets.find((wallet) => wallet.slot === 'primary') ?? wallets[0] ?? null
+    wallets.find((wallet) => wallet.id === walletId) ??
+    wallets.find((wallet) => wallet.slot === 'primary') ??
+    wallets[0] ??
+    null
 
   const form = useForm<CheckoutValues>({
     resolver: standardResolver(checkoutSchema),
@@ -53,10 +56,10 @@ export function useCheckout(wallets: WalletDto[], profile: UserDto) {
   const connectionData = connection.data ?? null
   const connected = Boolean(
     connectionData &&
-      selectedWallet &&
-      connectionData.walletId === selectedWallet.id &&
-      connectionData.provider === provider &&
-      connectionData.network === network,
+    selectedWallet &&
+    connectionData.walletId === selectedWallet.id &&
+    connectionData.provider === provider &&
+    connectionData.network === network,
   )
 
   const selectWallet = (wallet: WalletDto) => {
@@ -64,7 +67,8 @@ export function useCheckout(wallets: WalletDto[], profile: UserDto) {
     form.reset(checkoutDefaults(wallet, profile))
   }
 
-  const selectProvider = (value: WalletProvider) => form.setValue('provider', value, { shouldValidate: true, shouldDirty: true })
+  const selectProvider = (value: WalletProvider) =>
+    form.setValue('provider', value, { shouldValidate: true, shouldDirty: true })
 
   const connectSelected = async () => {
     if (!selectedWallet || !provider || !network) return false

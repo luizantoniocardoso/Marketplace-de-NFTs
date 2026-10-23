@@ -1,26 +1,26 @@
 import { z } from 'zod/mini'
 import type { UserDto } from '@/shared/contracts'
-import { MIN_PASSWORD_LENGTH, rules, splitEnsName } from '@/shared/lib'
+import { MIN_PASSWORD_LENGTH, rules, splitEnsName, VALIDATION_MESSAGES } from '@/shared/lib'
 
 export const profileSchema = z
   .object({
-    displayName: rules.required('Informe o nome de exibição.'),
+    displayName: rules.required(VALIDATION_MESSAGES.displayNameRequired),
     username: rules.username(),
     email: rules.email(),
     ensSuffix: rules.ensSuffix(),
     ensLabel: rules.ensLabel(),
-    walletNickname: rules.required('Informe o apelido da carteira.'),
+    walletNickname: rules.required(VALIDATION_MESSAGES.walletNicknameRequired),
     currentPassword: z.string(),
     newPassword: z.string(),
     confirmPassword: z.string(),
   })
   .check(
-    z.refine((values) => !values.newPassword && !values.confirmPassword || Boolean(values.currentPassword), {
+    z.refine((values) => (!values.newPassword && !values.confirmPassword) || Boolean(values.currentPassword), {
       error: 'Informe a senha atual para alterá-la.',
       path: ['currentPassword'],
     }),
     z.refine((values) => !values.currentPassword || values.newPassword.length >= MIN_PASSWORD_LENGTH, {
-      error: `A nova senha precisa ter ao menos ${MIN_PASSWORD_LENGTH} caracteres.`,
+      error: VALIDATION_MESSAGES.passwordTooShort,
       path: ['newPassword'],
     }),
     z.refine((values) => values.newPassword === values.confirmPassword, {

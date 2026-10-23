@@ -2,8 +2,6 @@ export {
   acknowledgeCartChanges,
   addCartItem,
   applyCoupon,
-  fetchCart,
-  fetchQuote,
   removeCartItem,
   removeCoupon,
   updateCartItem,

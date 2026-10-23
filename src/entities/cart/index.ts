@@ -10,4 +10,4 @@ export {
   updateCartItem,
 } from './api'
 export { useCart, useCartCount, useCartQuote } from './model'
-export { QuoteIssues, QuoteSummary, SummaryRow } from './ui'
+export { QuoteIssues, QuoteSummary } from './ui'

@@ -3,7 +3,7 @@ import { QuoteSummary } from '@/entities/cart'
 import { getApiError } from '@/shared/api'
 import { NFT_NETWORK_LABELS, WALLET_PROVIDER_LABELS } from '@/shared/contracts'
 import { shortenAddress } from '@/shared/lib'
-import { Button, Dialog, DialogContent, DialogDescription, DialogTitle } from '@/shared/ui'
+import { Button, Dialog, DialogContent, DialogDescription, DialogTitle, FormError } from '@/shared/ui'
 import type { CheckoutController } from '../model'
 import { OrderItemsReview } from './OrderItemsReview'
 
@@ -40,21 +40,20 @@ export function ReviewOrderDialog({ checkout }: { checkout: CheckoutController }
         <QuoteSummary className="mt-5" quote={quote.data} loading={quote.isPending} />
 
         {(changed || blocked) && (
-          <div role="alert" className="mt-5 flex gap-2 rounded-[4px] border border-amber/60 bg-amber/10 p-3 text-body text-foreground">
+          <div
+            role="alert"
+            className="mt-5 flex gap-2 rounded-[4px] border border-amber/60 bg-amber/10 p-3 text-body text-foreground"
+          >
             <AlertTriangle className="mt-0.5 size-4 shrink-0 text-amber" aria-hidden="true" />
             <div>
               {blocked
-                ? quote.data?.issues[0] ?? 'Há itens indisponíveis. Ajuste o carrinho para continuar.'
+                ? (quote.data?.issues[0] ?? 'Há itens indisponíveis. Ajuste o carrinho para continuar.')
                 : 'Os valores mudaram desde a sua revisão. Confira o novo resumo e confirme novamente.'}
             </div>
           </div>
         )}
 
-        {placeError && !changed && (
-          <p role="alert" className="mt-4 text-body text-coral">
-            {placeErrorMessage(placeError)}
-          </p>
-        )}
+        {placeError && !changed && <FormError className="mt-4">{placeErrorMessage(placeError)}</FormError>}
 
         <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
           <Button variant="brand-outline" size="xl" onClick={checkout.closeReview} disabled={placing}>

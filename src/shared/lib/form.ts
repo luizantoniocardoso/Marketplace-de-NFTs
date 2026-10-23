@@ -1,4 +1,14 @@
-import type { FieldErrors, FieldValues, Path, Resolver, UseFormSetError } from 'react-hook-form'
+import { useId, useState, type ReactNode } from 'react'
+import {
+  get,
+  type FieldError,
+  type FieldErrors,
+  type FieldValues,
+  type Path,
+  type Resolver,
+  type UseFormReturn,
+  type UseFormSetError,
+} from 'react-hook-form'
 
 interface StandardIssue {
   message: string
@@ -40,7 +50,7 @@ export function standardResolver<T extends FieldValues>(schema: StandardSchema<T
   }
 }
 
-export function applyFieldErrors<T extends FieldValues>(
+function applyFieldErrors<T extends FieldValues>(
   setError: UseFormSetError<T>,
   fields: Record<string, string> | undefined,
   allowed: ReadonlyArray<Path<T>>,
@@ -53,4 +63,44 @@ export function applyFieldErrors<T extends FieldValues>(
     applied = true
   }
   return applied
+}
+
+function fieldDescribedBy(id: string, error?: string, hint?: ReactNode) {
+  return [error ? `${id}-error` : null, hint ? `${id}-hint` : null].filter(Boolean).join(' ') || undefined
+}
+
+export function useFormFields<T extends FieldValues>({ register, formState }: UseFormReturn<T>) {
+  const prefix = useId()
+  const { errors } = formState
+
+  return (name: Path<T>) => {
+    const id = `${prefix}-${name}`
+    const error = (get(errors, name) as FieldError | undefined)?.message
+    return {
+      field: { id, error },
+      control: {
+        id,
+        'aria-invalid': error ? true : undefined,
+        'aria-describedby': fieldDescribedBy(id, error),
+        ...register(name),
+      },
+    }
+  }
+}
+
+interface ServerErrorPayload {
+  message: string
+  fields?: Record<string, string>
+}
+
+export function useServerErrors<T extends FieldValues>(setError: UseFormSetError<T>, allowed: ReadonlyArray<Path<T>>) {
+  const [formError, setFormError] = useState<string>()
+
+  return {
+    formError,
+    clear: () => setFormError(undefined),
+    report: ({ message, fields }: ServerErrorPayload) => {
+      if (!applyFieldErrors(setError, fields, allowed)) setFormError(message)
+    },
+  }
 }

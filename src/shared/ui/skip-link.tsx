@@ -1,7 +1,7 @@
 import { cn } from '@/shared/lib'
 import type { ComponentProps } from 'react'
 
-function SkipLink({ className, ...props }: ComponentProps<'a'>) {
+function SkipLink({ className, children, ...props }: ComponentProps<'a'>) {
   return (
     <a
       data-slot="skip-link"
@@ -10,7 +10,9 @@ function SkipLink({ className, ...props }: ComponentProps<'a'>) {
         className,
       )}
       {...props}
-    />
+    >
+      {children}
+    </a>
   )
 }
 

@@ -97,25 +97,131 @@ const EDITION_TEMPLATES = [
   { key: 'open', label: 'Aberta', supply: null, factor: 0.6, maxPerOrder: 20 },
 ] as const
 
-const FEATURED: Array<Pick<MockNft, 'name' | 'artwork' | 'collection' | 'network' | 'rarity'> & {
-  price: string
-  previous?: string
-}> = [
-  { name: 'Emerald Ape #042', artwork: 'emerald-ape', collection: 'arte-digital', network: 'ethereum', rarity: 'common', price: '1.19' },
-  { name: 'Sage Nomad #009', artwork: 'sage-nomad', collection: 'arte-digital', network: 'ethereum', rarity: 'common', price: '1.69' },
-  { name: 'Neon Vessel #552', artwork: 'ivory-baron', collection: 'colecionaveis', network: 'polygon', rarity: 'rare', price: '1.99', previous: '2.29' },
-  { name: 'Cosmic Bloom #118', artwork: 'sage-nomad', collection: 'generativa', network: 'ethereum', rarity: 'common', price: '1.29' },
-  { name: 'Violet Nomad #314', artwork: 'sage-nomad', collection: 'arte-3d', network: 'solana', rarity: 'common', price: '1.39' },
-  { name: 'Ivory Baron #088', artwork: 'ivory-baron', collection: 'fotografia', network: 'ethereum', rarity: 'legendary', price: '1.79' },
-  { name: 'Golden Beat #207', artwork: 'golden-beat', collection: 'musica', network: 'polygon', rarity: 'common', price: '0.99' },
-  { name: 'Amber Pulse #071', artwork: 'golden-beat', collection: 'musica', network: 'solana', rarity: 'common', price: '0.79' },
-  { name: 'Golden Signal #160', artwork: 'golden-beat', collection: 'musica', network: 'ethereum', rarity: 'rare', price: '0.39' },
+const FEATURED: Array<
+  Pick<MockNft, 'name' | 'artwork' | 'collection' | 'network' | 'rarity'> & {
+    price: string
+    previous?: string
+  }
+> = [
+  {
+    name: 'Emerald Ape #042',
+    artwork: 'emerald-ape',
+    collection: 'arte-digital',
+    network: 'ethereum',
+    rarity: 'common',
+    price: '1.19',
+  },
+  {
+    name: 'Sage Nomad #009',
+    artwork: 'sage-nomad',
+    collection: 'arte-digital',
+    network: 'ethereum',
+    rarity: 'common',
+    price: '1.69',
+  },
+  {
+    name: 'Neon Vessel #552',
+    artwork: 'ivory-baron',
+    collection: 'colecionaveis',
+    network: 'polygon',
+    rarity: 'rare',
+    price: '1.99',
+    previous: '2.29',
+  },
+  {
+    name: 'Cosmic Bloom #118',
+    artwork: 'sage-nomad',
+    collection: 'generativa',
+    network: 'ethereum',
+    rarity: 'common',
+    price: '1.29',
+  },
+  {
+    name: 'Violet Nomad #314',
+    artwork: 'sage-nomad',
+    collection: 'arte-3d',
+    network: 'solana',
+    rarity: 'common',
+    price: '1.39',
+  },
+  {
+    name: 'Ivory Baron #088',
+    artwork: 'ivory-baron',
+    collection: 'fotografia',
+    network: 'ethereum',
+    rarity: 'legendary',
+    price: '1.79',
+  },
+  {
+    name: 'Golden Beat #207',
+    artwork: 'golden-beat',
+    collection: 'musica',
+    network: 'polygon',
+    rarity: 'common',
+    price: '0.99',
+  },
+  {
+    name: 'Amber Pulse #071',
+    artwork: 'golden-beat',
+    collection: 'musica',
+    network: 'solana',
+    rarity: 'common',
+    price: '0.79',
+  },
+  {
+    name: 'Golden Signal #160',
+    artwork: 'golden-beat',
+    collection: 'musica',
+    network: 'ethereum',
+    rarity: 'rare',
+    price: '0.39',
+  },
 ]
 
-const PREFIXES = ['Amber', 'Copper', 'Jade', 'Lunar', 'Rust', 'Velvet', 'Onyx', 'Saffron', 'Ochre', 'Moss', 'Cobalt', 'Sable', 'Crimson', 'Ivory', 'Golden', 'Emerald']
-const NOUNS = ['Ape', 'Nomad', 'Baron', 'Beat', 'Signal', 'Vessel', 'Bloom', 'Drifter', 'Monk', 'Pilot', 'Echo', 'Warden']
+const PREFIXES = [
+  'Amber',
+  'Copper',
+  'Jade',
+  'Lunar',
+  'Rust',
+  'Velvet',
+  'Onyx',
+  'Saffron',
+  'Ochre',
+  'Moss',
+  'Cobalt',
+  'Sable',
+  'Crimson',
+  'Ivory',
+  'Golden',
+  'Emerald',
+]
+const NOUNS = [
+  'Ape',
+  'Nomad',
+  'Baron',
+  'Beat',
+  'Signal',
+  'Vessel',
+  'Bloom',
+  'Drifter',
+  'Monk',
+  'Pilot',
+  'Echo',
+  'Warden',
+]
 const ARTWORK_KEYS = Object.keys(ARTWORKS) as ArtworkKey[]
-const COLLECTIONS: NftCollection[] = ['arte-digital', 'fotografia', 'musica', 'arte-3d', 'colecionaveis', 'generativa', 'jogos', 'assinaturas', 'utilidade']
+const COLLECTIONS: NftCollection[] = [
+  'arte-digital',
+  'fotografia',
+  'musica',
+  'arte-3d',
+  'colecionaveis',
+  'generativa',
+  'jogos',
+  'assinaturas',
+  'utilidade',
+]
 const NETWORKS: NftNetwork[] = ['ethereum', 'polygon', 'solana']
 const NETWORK_NAMES: Record<NftNetwork, string> = { ethereum: 'Ethereum', polygon: 'Polygon', solana: 'Solana' }
 const HEX = '0123456789ABCDEF'
@@ -137,7 +243,8 @@ function editionsFor(id: string, basePrice: string, random: () => number, soldOu
   const base = Number(basePrice)
   const templates = EDITION_TEMPLATES.filter((t) => featured || t.key === 'e50' || random() > 0.4)
   return templates.map<MockEdition>((t) => {
-    const stock = t.supply === null ? 999 : t.key === 'e50' ? 10 + Math.floor(random() * 41) : Math.floor(random() * (t.supply + 1))
+    const stock =
+      t.supply === null ? 999 : t.key === 'e50' ? 10 + Math.floor(random() * 41) : Math.floor(random() * (t.supply + 1))
     return {
       id: `${id}-${t.key}`,
       label: t.label,
@@ -185,7 +292,8 @@ export function createNftFixtures(): MockNft[] {
     }
     usedNames.add(name)
 
-    const price = featured?.price ?? (i === TOTAL - 1 ? '12.30' : i === TOTAL - 2 ? '0.02' : cents(0.05 + random() * 9.5))
+    const price =
+      featured?.price ?? (i === TOTAL - 1 ? '12.30' : i === TOTAL - 2 ? '0.02' : cents(0.05 + random() * 9.5))
     const soldOut = !featured && i % 13 === 0
     const creator = CREATORS[i % CREATORS.length]
     const artwork = featured?.artwork ?? pick(ARTWORK_KEYS, random)

@@ -35,7 +35,7 @@ export function CartSummary() {
       </section>
 
       {hasItems && (
-        <section aria-label="Resumo do pedido" className="mt-6 -mx-6 rounded-t-[32px] bg-ink px-6 pt-6 pb-8 md:hidden">
+        <section aria-label="Resumo do pedido" className="-mx-6 mt-6 rounded-t-[32px] bg-ink px-6 pt-6 pb-8 md:hidden">
           <CouponForm variant="pill" coupon={cart.data?.coupon ?? null} />
           <QuoteSummary className="mt-5" quote={quote.data} loading={loading} />
           <QuoteIssues className="mt-3" quote={quote.data} />

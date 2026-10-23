@@ -5,6 +5,7 @@ import {
   type OrderDto,
   type OrderUpdatedEvent,
   type RealtimeEvent,
+  type SessionJoinPayload,
 } from '@/shared/contracts'
 import type { MockNft } from '../fixtures'
 import { nftAvailable, nftPrice } from './serializers'
@@ -25,7 +26,7 @@ let lastEvent: { name: string; payload: RealtimeEvent<string, unknown>; userId: 
 export function registerClient(io: SocketIoConnection, close: () => void) {
   const client: RealtimeClient = { io, userId: null, close }
   clients.add(client)
-  io.client.on(REALTIME_EVENTS.sessionJoin, (_event, payload: { token?: string }) => {
+  io.client.on(REALTIME_EVENTS.sessionJoin, (_event, payload: Partial<SessionJoinPayload> | undefined) => {
     client.userId = userForToken(payload?.token ?? null)?.id ?? null
   })
   io.client.on(REALTIME_EVENTS.sessionLeave, () => {
@@ -88,8 +89,4 @@ export function replayLastEvent({ stale = false } = {}) {
 
 export function dropConnections() {
   for (const client of [...clients]) client.close()
-}
-
-export function connectedClients() {
-  return clients.size
 }

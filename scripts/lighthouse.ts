@@ -96,9 +96,10 @@ try {
       summary[profile][page.name] = {
         runs,
         median: {
-          scores: Object.fromEntries(
-            CATEGORIES.map((c) => [c, median(runs.map((r) => r.scores[c]))]),
-          ) as Record<Category, number>,
+          scores: Object.fromEntries(CATEGORIES.map((c) => [c, median(runs.map((r) => r.scores[c]))])) as Record<
+            Category,
+            number
+          >,
           metrics: {
             lcp: median(runs.map((r) => r.metrics.lcp)),
             cls: median(runs.map((r) => r.metrics.cls)),

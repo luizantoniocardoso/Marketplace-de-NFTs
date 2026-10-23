@@ -1,6 +1,6 @@
 import type { ManagerOptions, Socket, SocketOptions } from 'socket.io-client'
 import { env, REALTIME_PATH } from '@/shared/config'
-import { REALTIME_EVENTS } from '@/shared/contracts'
+import { REALTIME_EVENTS, type SessionJoinPayload } from '@/shared/contracts'
 import { viewer } from './viewer'
 
 const options: Partial<ManagerOptions & SocketOptions> = {
@@ -17,8 +17,12 @@ let current: Socket | undefined
 
 function joinCurrentSession(socket: Socket) {
   const token = viewer.getToken()
-  if (token) socket.emit(REALTIME_EVENTS.sessionJoin, { token })
-  else socket.emit(REALTIME_EVENTS.sessionLeave)
+  if (!token) {
+    socket.emit(REALTIME_EVENTS.sessionLeave)
+    return
+  }
+  const payload: SessionJoinPayload = { token }
+  socket.emit(REALTIME_EVENTS.sessionJoin, payload)
 }
 
 export function loadSocket(): Promise<Socket> {

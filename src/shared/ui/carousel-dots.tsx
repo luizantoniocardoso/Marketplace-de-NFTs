@@ -22,7 +22,10 @@ function CarouselDots({ count, current, onSelect, label, itemLabel, className }:
           className="grid size-6 place-items-center"
         >
           <span
-            className={cn('size-2 rounded-full bg-brand transition-opacity', index === current ? 'opacity-100' : 'opacity-60')}
+            className={cn(
+              'size-2 rounded-full bg-brand transition-opacity',
+              index === current ? 'opacity-100' : 'opacity-60',
+            )}
           />
         </button>
       ))}

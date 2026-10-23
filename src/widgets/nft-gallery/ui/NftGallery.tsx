@@ -30,7 +30,14 @@ export function NftGallery({ images, name, className }: NftGalleryProps) {
                 index === selected ? 'border-brand' : 'border-transparent hover:border-border-soft',
               )}
             >
-              <img src={image.small} alt="" width={100} height={100} loading="lazy" className="size-full object-cover" />
+              <img
+                src={image.small}
+                alt=""
+                width={100}
+                height={100}
+                loading="lazy"
+                className="size-full object-cover"
+              />
             </button>
           </li>
         ))}

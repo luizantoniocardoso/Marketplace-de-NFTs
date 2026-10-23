@@ -11,7 +11,10 @@ export function CartChangesNotice({ items }: { items: CartItemDto[] }) {
   const soldOut = changed.some((item) => item.status === 'unavailable')
 
   return (
-    <div role="status" className="flex flex-col gap-3 rounded-[4px] border border-amber/60 bg-amber/10 p-4 sm:flex-row sm:items-center">
+    <div
+      role="status"
+      className="flex flex-col gap-3 rounded-[4px] border border-amber/60 bg-amber/10 p-4 sm:flex-row sm:items-center"
+    >
       <AlertTriangle className="size-5 shrink-0 text-amber" aria-hidden="true" />
       <p className="flex-1 text-body text-foreground">
         {soldOut

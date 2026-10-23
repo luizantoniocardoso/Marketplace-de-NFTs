@@ -9,8 +9,6 @@ import { profileHandlers } from './profile'
 import { socketHandlers } from './socket'
 import { walletHandlers } from './wallets'
 
-export { realtime } from './socket'
-
 export const handlers = [
   ...httpHandlers,
   ...authHandlers,

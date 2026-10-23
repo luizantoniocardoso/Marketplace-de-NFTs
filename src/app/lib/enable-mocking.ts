@@ -1,8 +1,9 @@
+import type { MockControls } from '@/shared/mocks'
 import { env } from '@/shared/config'
 
 declare global {
   interface Window {
-    __kurioMocks?: import('@/shared/mocks').MockControls
+    __kurioMocks?: MockControls
   }
 }
 

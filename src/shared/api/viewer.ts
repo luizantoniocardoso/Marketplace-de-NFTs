@@ -65,7 +65,3 @@ export const viewer = {
 export function useViewerId() {
   return useSyncExternalStore(viewer.subscribe, viewer.getId, () => null)
 }
-
-export function viewerScope(viewerId: string | null) {
-  return viewerId ?? 'guest'
-}

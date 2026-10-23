@@ -36,7 +36,7 @@ export function SecondaryWalletSection({ wallet, primary }: SecondaryWalletSecti
                   checked={sameAsPrimary}
                   disabled={!primary}
                   onCheckedChange={(checked) => setSameAsPrimary(checked === true)}
-                  className="rounded-full border-brand data-checked:bg-brand"
+                  variant="brand"
                 />
                 Igual à carteira principal
               </label>

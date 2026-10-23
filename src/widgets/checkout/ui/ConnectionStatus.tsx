@@ -10,7 +10,11 @@ export function ConnectionStatus({ checkout, className }: { checkout: CheckoutCo
   return (
     <div role="status" className={cn('flex flex-wrap items-center justify-between gap-2 text-caption', className)}>
       <p className={cn('flex items-center gap-1.5', connected ? 'text-success' : 'text-text-secondary')}>
-        {connected ? <Link2 className="size-4" aria-hidden="true" /> : <Link2Off className="size-4" aria-hidden="true" />}
+        {connected ? (
+          <Link2 className="size-4" aria-hidden="true" />
+        ) : (
+          <Link2Off className="size-4" aria-hidden="true" />
+        )}
         {connected && connection
           ? `${WALLET_PROVIDER_LABELS[connection.provider]} conectada · ${shortenAddress(connection.address)}`
           : connecting

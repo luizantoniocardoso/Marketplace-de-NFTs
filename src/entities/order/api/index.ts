@@ -1,1 +1,1 @@
-export { createOrder, fetchOrder, orderKeys, orderQueries } from './order-api'
+export { createOrder, orderKeys, orderQueries } from './order-api'

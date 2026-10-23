@@ -25,7 +25,10 @@ export function CartItemCard({ item }: { item: CartItemDto }) {
       </div>
       <div className="flex flex-col items-end justify-between py-1 pr-2">
         <RemoveCartItemButton item={item} className="size-8" />
-        <CartItemQuantity item={item} className="mb-3 [&_button]:size-[22px] [&_button]:border [&_button]:border-border-soft [&_button]:bg-transparent [&_button]:text-foreground [&_button:disabled]:bg-surface-raised" />
+        <CartItemQuantity
+          item={item}
+          className="mb-3 [&_button]:size-[22px] [&_button]:border [&_button]:border-border-soft [&_button]:bg-transparent [&_button]:text-foreground [&_button:disabled]:bg-surface-raised"
+        />
       </div>
     </article>
   )

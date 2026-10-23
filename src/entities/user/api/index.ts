@@ -1,9 +1,1 @@
-export {
-  changePassword,
-  fetchProfile,
-  profileKeys,
-  profileQueries,
-  removeAvatar,
-  updateProfile,
-  uploadAvatar,
-} from './user-api'
+export { changePassword, profileKeys, profileQueries, removeAvatar, updateProfile, uploadAvatar } from './user-api'

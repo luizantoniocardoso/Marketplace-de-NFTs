@@ -18,7 +18,14 @@ const EXPLORERS: Record<NftNetwork, string> = {
 const timers = new Map<string, ReturnType<typeof setTimeout>>()
 
 export function toOrderDto(order: MockOrder): OrderDto {
-  const { userId: _userId, idempotencyKey: _key, requestHash: _hash, settleAt: _settleAt, outcome: _outcome, ...dto } = order
+  const {
+    userId: _userId,
+    idempotencyKey: _key,
+    requestHash: _hash,
+    settleAt: _settleAt,
+    outcome: _outcome,
+    ...dto
+  } = order
   return dto
 }
 
@@ -63,7 +70,10 @@ export function settleOrder(orderId: string) {
 export function scheduleSettlement(order: MockOrder) {
   if (order.status !== 'pending' || timers.has(order.id)) return
   const wait = Math.max(0, Date.parse(order.settleAt) - Date.now())
-  timers.set(order.id, setTimeout(() => settleOrder(order.id), wait))
+  timers.set(
+    order.id,
+    setTimeout(() => settleOrder(order.id), wait),
+  )
 }
 
 export function settleDueOrder(order: MockOrder) {
@@ -87,7 +97,12 @@ export function createOrder(user: MockUser, body: Partial<CreateOrderRequest>, i
   }
 
   const wallet = db.data.wallets.find((item) => item.id === body.walletId && item.userId === user.id)
-  if (!wallet) return { error: apiError('VALIDATION_ERROR', 'Selecione uma carteira cadastrada.', { walletId: 'Selecione uma carteira cadastrada.' }) }
+  if (!wallet)
+    return {
+      error: apiError('VALIDATION_ERROR', 'Selecione uma carteira cadastrada.', {
+        walletId: 'Selecione uma carteira cadastrada.',
+      }),
+    }
   const connection = db.data.connections[user.id]
   if (!connection || connection.walletId !== wallet.id) {
     return { error: apiError('CONFLICT', 'Conecte a carteira selecionada antes de confirmar a compra.') }
@@ -96,7 +111,8 @@ export function createOrder(user: MockUser, body: Partial<CreateOrderRequest>, i
   const cart = getCart(userOwner(user.id))
   const quote = computeQuote(cart)
   if (!quote.lines.length) return { error: apiError('CONFLICT', 'Seu carrinho está vazio.') }
-  if (!quote.purchasable) return { error: apiError('OUT_OF_STOCK', quote.issues[0] ?? 'Há itens indisponíveis no carrinho.') }
+  if (!quote.purchasable)
+    return { error: apiError('OUT_OF_STOCK', quote.issues[0] ?? 'Há itens indisponíveis no carrinho.') }
   if (quote.fingerprint !== body.quoteFingerprint) {
     return { error: apiError('QUOTE_OUTDATED', 'Os valores do pedido mudaram. Revise o resumo e confirme novamente.') }
   }

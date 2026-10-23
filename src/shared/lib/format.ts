@@ -11,10 +11,6 @@ export function formatShortDate(iso: string) {
   return `${date.getDate()} ${MONTHS[date.getMonth()]}, ${date.getFullYear()}`
 }
 
-export function pluralize(count: number, singular: string, plural: string) {
-  return `${count} ${count === 1 ? singular : plural}`
-}
-
 export function readFileAsDataUrl(file: File) {
   return new Promise<string>((resolve, reject) => {
     const reader = new FileReader()

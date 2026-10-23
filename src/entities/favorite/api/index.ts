@@ -1,1 +1,1 @@
-export { addFavorite, favoriteKeys, favoriteQueries, fetchFavorites, removeFavorite } from './favorite-api'
+export { addFavorite, favoriteKeys, favoriteQueries, removeFavorite } from './favorite-api'

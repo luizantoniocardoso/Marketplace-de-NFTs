@@ -4,7 +4,8 @@ import { cn, formatEth } from '@/shared/lib'
 function cartItemStatusText(item: CartItemDto) {
   if (item.status === 'unavailable') return 'Edição esgotada'
   if (item.status === 'quantity_reduced') return `Restam apenas ${item.available}`
-  if (item.status === 'price_changed' && item.previousUnitPriceEth) return `Preço atualizado (antes ${formatEth(item.previousUnitPriceEth)})`
+  if (item.status === 'price_changed' && item.previousUnitPriceEth)
+    return `Preço atualizado (antes ${formatEth(item.previousUnitPriceEth)})`
   return null
 }
 
@@ -13,6 +14,8 @@ export function CartItemStatus({ item, className }: { item: CartItemDto; classNa
   if (!text) return null
 
   return (
-    <p className={cn('text-caption', item.status === 'price_changed' ? 'text-amber' : 'text-coral', className)}>{text}</p>
+    <p className={cn('text-caption', item.status === 'price_changed' ? 'text-amber' : 'text-coral', className)}>
+      {text}
+    </p>
   )
 }
