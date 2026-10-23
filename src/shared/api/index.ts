@@ -1,3 +1,5 @@
+export { getApiError } from './errors'
 export { http } from './http'
 export { queryClient } from './query-client'
-export { socket } from './socket'
+export { deferRequestsUntil, whenApiReady } from './readiness'
+export { getSocket } from './socket'

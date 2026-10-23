@@ -17,8 +17,8 @@ import { Route as RegisterRouteImport } from './../routes/register'
 import { Route as AuthenticatedCheckoutRouteImport } from './../routes/_authenticated/checkout'
 import { Route as AuthenticatedProfileRouteImport } from './../routes/_authenticated/profile'
 import { Route as AuthenticatedWalletsRouteImport } from './../routes/_authenticated/wallets'
-import { Route as NftNftIdRouteImport } from './../routes/nft.$nftId'
-import { Route as AuthenticatedOrdersOrderIdRouteImport } from './../routes/_authenticated/orders.$orderId'
+import { Route as NftNftIdRouteImport } from './../routes/nft/$nftId'
+import { Route as AuthenticatedOrdersOrderIdRouteImport } from './../routes/_authenticated/orders/$orderId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',

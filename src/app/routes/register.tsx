@@ -1,13 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { RegisterPage } from '@/pages/register'
-
-interface AuthSearch {
-  redirect?: string
-}
+import { redirectSearchSchema } from '@/shared/lib'
 
 export const Route = createFileRoute('/register')({
-  validateSearch: (search: Record<string, unknown>): AuthSearch => ({
-    redirect: typeof search.redirect === 'string' ? search.redirect : undefined,
-  }),
+  validateSearch: redirectSearchSchema,
   component: RegisterPage,
 })

@@ -1,6 +1,3 @@
-// Auditoria Lighthouse: N medições por página e perfil sobre o build otimizado,
-// com relatórios HTML/JSON por execução e um resumo com as medianas.
-// Uso: npm run lighthouse (configuração em lighthouse.config.json)
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
@@ -59,7 +56,6 @@ try {
       await mkdir(dir, { recursive: true })
 
       for (let run = 1; run <= config.runs; run++) {
-        // Um Chrome novo por medição, sem cache nem estado compartilhado.
         const chrome = await chromeLauncher.launch({
           chromePath,
           chromeFlags: ['--headless=new', '--no-first-run'],

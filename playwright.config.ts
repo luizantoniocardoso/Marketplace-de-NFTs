@@ -31,7 +31,6 @@ export default defineConfig({
       use: { ...devices['iPhone 13'], browserName: 'chromium' },
     },
   ],
-  // Testes rodam contra o build otimizado com os mocks do MSW ativos.
   webServer: {
     command: `npm run build && npm run preview -- --port ${PORT} --strictPort`,
     url: `http://localhost:${PORT}`,
