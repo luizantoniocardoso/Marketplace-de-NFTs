@@ -1,0 +1,1 @@
+export { NftInfoTabs } from './NftInfoTabs'

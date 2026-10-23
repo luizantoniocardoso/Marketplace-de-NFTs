@@ -1,4 +1,4 @@
-import { cn } from 'cn'
+import { cn } from '@/shared/lib'
 import type { ComponentProps } from 'react'
 
 function SkipLink({ className, ...props }: ComponentProps<'a'>) {

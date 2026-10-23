@@ -3,6 +3,8 @@ import { cn } from '@/shared/lib'
 import { ComingSoon } from '@/shared/ui'
 import type { NavItem } from '../model'
 
+const MARKET_PATHS = /^\/(nft|cart|checkout)(\/|$)/
+
 const navItemClass =
   'relative flex h-full items-center px-0.5 text-body-md text-foreground transition-colors hover:text-text-accent'
 
@@ -13,7 +15,10 @@ export function HeaderNavLink({ item }: { item: NavItem }) {
     return <ComingSoon className={cn(navItemClass, 'hover:text-foreground')}>{item.label}</ComingSoon>
   }
 
-  const active = location.pathname === item.to && (item.hash ? location.hash === item.hash : !location.hash)
+  const inMarket = MARKET_PATHS.test(location.pathname)
+  const active = item.hash
+    ? inMarket || (location.pathname === item.to && location.hash === item.hash)
+    : location.pathname === item.to && !location.hash
 
   return (
     <Link

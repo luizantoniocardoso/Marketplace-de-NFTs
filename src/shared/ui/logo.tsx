@@ -1,4 +1,4 @@
-import { cn } from 'cn'
+import { cn } from '@/shared/lib'
 import type { ComponentProps } from 'react'
 
 function Logo({ className, ...props }: ComponentProps<'span'>) {

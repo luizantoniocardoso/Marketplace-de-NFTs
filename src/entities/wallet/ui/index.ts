@@ -1,0 +1,1 @@
+export { WalletProviderIcon } from './WalletProviderIcon'

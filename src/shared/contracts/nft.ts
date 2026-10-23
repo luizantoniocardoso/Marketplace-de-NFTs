@@ -70,6 +70,38 @@ export interface NftListResponse extends Paginated<NftSummaryDto> {
   }
 }
 
+export interface NftEditionDto {
+  id: string
+  label: string
+  priceEth: string
+  supply: number | null
+  available: number
+  maxPerOrder: number
+}
+
+export interface NftReviewDto {
+  id: string
+  author: string
+  rating: number
+  comment: string
+  createdAt: string
+}
+
+export interface NftDetailDto extends NftSummaryDto {
+  tokenId: string
+  description: string
+  story: string[]
+  collectionName: string
+  creator: { name: string; handle: string }
+  attributes: string[]
+  contract: { address: string; standard: string; royaltyPercent: number }
+  rating: { average: number; count: number }
+  reviews: NftReviewDto[]
+  gallery: NftImageDto[]
+  editions: NftEditionDto[]
+  defaultEditionId: string
+}
+
 export const NFT_COLLECTION_LABELS: Record<NftCollection, string> = {
   'arte-digital': 'Arte digital',
   fotografia: 'Fotografia',

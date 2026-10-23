@@ -1,4 +1,4 @@
-import { cn } from 'cn'
+import { cn } from '@/shared/lib'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 interface PaginationProps {

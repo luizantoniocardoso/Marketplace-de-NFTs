@@ -1,0 +1,1 @@
+export { NftGallery } from './NftGallery'

@@ -1,11 +1,25 @@
 import { env } from '@/shared/config'
 
+declare global {
+  interface Window {
+    __kurioMocks?: import('@/shared/mocks').MockControls
+  }
+}
+
 export async function enableMocking() {
   if (!env.ENABLE_MOCKS) return
 
-  const { worker } = await import('@/shared/mocks')
+  const { applyMockParams, mockControls, startMockServices, worker } = await import('@/shared/mocks')
+  const cleanUrl = applyMockParams(new URL(window.location.href))
+  if (cleanUrl) {
+    window.location.replace(cleanUrl)
+    return new Promise<never>(() => undefined)
+  }
+
   await worker.start({
     onUnhandledRequest: 'bypass',
     quiet: import.meta.env.PROD,
   })
+  startMockServices()
+  window.__kurioMocks = mockControls
 }

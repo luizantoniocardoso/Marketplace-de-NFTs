@@ -5,6 +5,12 @@ export type ApiErrorCode =
   | 'FORBIDDEN'
   | 'NOT_FOUND'
   | 'CONFLICT'
+  | 'OUT_OF_STOCK'
+  | 'COUPON_INVALID'
+  | 'COUPON_EXPIRED'
+  | 'QUOTE_OUTDATED'
+  | 'IDEMPOTENCY_CONFLICT'
+  | 'WALLET_REJECTED'
   | 'UNAVAILABLE'
   | 'INTERNAL_ERROR'
 
@@ -27,3 +33,9 @@ export interface Paginated<T> {
 export interface NewsletterSubscribeRequest {
   email: string
 }
+
+export const API_HEADERS = {
+  authorization: 'Authorization',
+  cartId: 'X-Cart-Id',
+  idempotencyKey: 'Idempotency-Key',
+} as const

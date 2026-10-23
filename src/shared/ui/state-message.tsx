@@ -1,4 +1,4 @@
-import { cn } from 'cn'
+import { cn } from '@/shared/lib'
 import type { LucideIcon } from 'lucide-react'
 import type { ComponentProps, ReactNode } from 'react'
 
@@ -18,8 +18,8 @@ function StateMessage({ icon: Icon, iconClassName, title, description, action, c
       {...props}
     >
       <Icon className={cn('size-8 text-text-secondary', iconClassName)} aria-hidden="true" />
-      <p className="text-body-lg font-bold">{title}</p>
-      <p className="max-w-md text-body text-text-secondary">{description}</p>
+      <div className="text-body-lg font-bold">{title}</div>
+      <div className="max-w-md text-body text-text-secondary">{description}</div>
       {action && <div className="mt-2">{action}</div>}
     </div>
   )

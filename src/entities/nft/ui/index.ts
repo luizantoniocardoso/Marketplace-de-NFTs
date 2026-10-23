@@ -1,4 +1,6 @@
+export { EditionPicker } from './EditionPicker'
 export { NftCard } from './NftCard'
 export { NftCardSkeleton } from './NftCardSkeleton'
+export { NftLineItem } from './NftLineItem'
 export { NftPrice } from './NftPrice'
 export { NftRarityBadge } from './NftRarityBadge'

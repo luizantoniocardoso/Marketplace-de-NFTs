@@ -1,17 +1,16 @@
-import { http, HttpResponse } from 'msw'
+import { http } from 'msw'
 import { env } from '@/shared/config'
 import type { NewsletterSubscribeRequest } from '@/shared/contracts'
-import { apiError, networkLatency } from './utils'
-
-const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+import { apiError, EMAIL_PATTERN, noContent, readJson, simulateNetwork } from '../services'
 
 export const newsletterHandlers = [
-  http.post<never, NewsletterSubscribeRequest>(`${env.API_URL}/newsletter`, async ({ request }) => {
-    await networkLatency()
-    const body = (await request.json().catch(() => ({}))) as Partial<NewsletterSubscribeRequest>
-    if (!body.email || !EMAIL.test(body.email)) {
+  http.post(`${env.API_URL}/newsletter`, async ({ request }) => {
+    const failure = await simulateNetwork()
+    if (failure) return failure
+    const body = await readJson<NewsletterSubscribeRequest>(request)
+    if (!body.email || !EMAIL_PATTERN.test(body.email)) {
       return apiError('VALIDATION_ERROR', 'Informe um e-mail válido', { email: 'Informe um e-mail válido' })
     }
-    return new HttpResponse(null, { status: 204 })
+    return noContent()
   }),
 ]

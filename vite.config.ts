@@ -4,6 +4,9 @@ import react from '@vitejs/plugin-react'
 import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
 
+const SOCKET_CLIENT_MODULES = /node_modules[\\/](socket\.io-client|engine\.io-client)[\\/]/
+const SOCKET_PROTOCOL_MODULES = /node_modules[\\/](socket\.io-parser|engine\.io-parser|@socket\.io[\\/]component-emitter)[\\/]/
+
 export default defineConfig({
   plugins: [
     tanstackRouter({
@@ -17,6 +20,16 @@ export default defineConfig({
   ],
   build: {
     sourcemap: true,
+    rolldownOptions: {
+      output: {
+        advancedChunks: {
+          groups: [
+            { name: 'socket-protocol', test: SOCKET_PROTOCOL_MODULES, priority: 2 },
+            { name: 'socket-client', test: SOCKET_CLIENT_MODULES, priority: 1 },
+          ],
+        },
+      },
+    },
   },
   resolve: {
     alias: {

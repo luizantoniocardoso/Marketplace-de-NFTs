@@ -1,10 +1,11 @@
+import { cn } from '@/shared/lib'
 import { FooterContact } from './FooterContact'
 import { FooterHighlights } from './FooterHighlights'
 import { FooterLinks } from './FooterLinks'
 
-export function SiteFooter() {
+export function SiteFooter({ className }: { className?: string }) {
   return (
-    <footer className="page-container mt-24 pb-28 md:pb-0">
+    <footer className={cn('page-container mt-24 pb-28 md:pb-0', className)}>
       <FooterHighlights />
       <FooterContact />
       <FooterLinks />

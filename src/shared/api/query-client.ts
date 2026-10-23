@@ -3,6 +3,12 @@ import { isAxiosError } from 'axios'
 
 const MAX_RETRIES = 2
 
+export const PRIVATE_SCOPE = 'private'
+
+export function privateKey(viewerId: string | null, ...parts: unknown[]) {
+  return [PRIVATE_SCOPE, viewerId ?? 'anonymous', ...parts] as const
+}
+
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {

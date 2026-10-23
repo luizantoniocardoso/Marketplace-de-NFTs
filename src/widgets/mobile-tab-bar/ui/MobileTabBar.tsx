@@ -15,7 +15,7 @@ export function MobileTabBar() {
             </TabBarLink>
           </li>
           <li>
-            <TabBarLink to="/profile" label="Favoritos">
+            <TabBarLink to="/favorites" label="Favoritos">
               <Heart className="size-6" fill="currentColor" aria-hidden="true" />
             </TabBarLink>
           </li>

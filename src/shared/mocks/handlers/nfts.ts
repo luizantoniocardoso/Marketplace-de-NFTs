@@ -7,8 +7,8 @@ import {
   NFT_NETWORKS,
   NFT_SORTS,
   NFT_TABS,
-  type ApiErrorBody,
   type NftCollection,
+  type NftDetailDto,
   type NftListResponse,
   type NftNetwork,
   type NftSort,
@@ -17,8 +17,8 @@ import {
 import { compareEth, isEthAmount } from '@/shared/lib'
 import { db } from '../db'
 import type { MockNft } from '../fixtures'
-import { nftPrice, toNftSummary } from './serializers'
-import { apiError, networkLatency } from './utils'
+import { isScenario } from '../scenarios'
+import { apiError, findNft, nftPrice, simulateNetwork, toNftDetail, toNftSummary } from '../services'
 
 const DEFAULT_PAGE_SIZE = 9
 const MAX_PAGE_SIZE = 48
@@ -60,8 +60,9 @@ const sorters: Record<NftSort, (a: MockNft, b: MockNft) => number> = {
 }
 
 export const nftHandlers = [
-  http.get<never, never, NftListResponse | ApiErrorBody>(`${env.API_URL}/nfts`, async ({ request }) => {
-    await networkLatency()
+  http.get(`${env.API_URL}/nfts`, async ({ request }) => {
+    const failure = await simulateNetwork()
+    if (failure) return failure
     const url = new URL(request.url)
     const params = url.searchParams
 
@@ -85,8 +86,8 @@ export const nftHandlers = [
     if (maxPrice && !isEthAmount(maxPrice)) fields.maxPrice = 'Preço máximo inválido'
     if (Object.keys(fields).length) return apiError('VALIDATION_ERROR', 'Parâmetros de busca inválidos', fields)
 
-    const all = db.data.nfts
-    const newestListing = Math.max(...all.map((n) => Date.parse(n.listedAt)))
+    const all = isScenario('empty-catalog') ? [] : db.data.nfts
+    const newestListing = Math.max(0, ...all.map((n) => Date.parse(n.listedAt)))
     const filters: Filters = { q: params.get('q') ?? '', collections, networks, minPrice, maxPrice, tab }
 
     const results = all.filter((n) => matches(n, filters, newestListing)).sort(sorters[sort])
@@ -102,7 +103,7 @@ export const nftHandlers = [
     }
     const collectionCounts = countBy('collection', 'collections')
     const networkCounts = countBy('network', 'networks')
-    const prices = all.map(nftPrice).sort(compareEth)
+    const prices = db.data.nfts.map(nftPrice).sort(compareEth)
 
     return HttpResponse.json<NftListResponse>({
       items: results.slice((page - 1) * pageSize, page * pageSize).map(toNftSummary),
@@ -124,5 +125,13 @@ export const nftHandlers = [
         price: { min: prices[0], max: prices[prices.length - 1] },
       },
     })
+  }),
+
+  http.get(`${env.API_URL}/nfts/:nftId`, async ({ params }) => {
+    const failure = await simulateNetwork()
+    if (failure) return failure
+    const nft = findNft(String(params.nftId))
+    if (!nft) return apiError('NOT_FOUND', 'Este NFT não existe ou foi removido do mercado.')
+    return HttpResponse.json<NftDetailDto>(toNftDetail(nft))
   }),
 ]
