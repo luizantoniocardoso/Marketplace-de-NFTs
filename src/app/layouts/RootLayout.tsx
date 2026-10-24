@@ -17,7 +17,7 @@ export function RootLayout() {
     <>
       <SkipLink href={`#${MAIN_ID}`}>Pular para o conteúdo</SkipLink>
       <SiteHeader />
-      <main id={MAIN_ID} tabIndex={-1} className="outline-none">
+      <main id={MAIN_ID} tabIndex={-1} className="min-h-dvh outline-none">
         <Outlet />
       </main>
       <SiteFooter className={cn(immersiveMobile && 'max-md:hidden')} />

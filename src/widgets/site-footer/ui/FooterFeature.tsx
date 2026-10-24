@@ -9,7 +9,7 @@ export function FooterFeature({ feature }: { feature: FooterFeatureData }) {
       >
         {feature.letter}
       </span>
-      <h3 className="mt-5 text-body-lg font-bold">{feature.title}</h3>
+      <h3 className="mt-5 text-body-lg font-bold wrap-break-word">{feature.title}</h3>
       <p className="mt-2 max-w-[220px] text-body text-text-secondary">{feature.text}</p>
     </div>
   )

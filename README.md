@@ -205,4 +205,4 @@ railway login
 railway up
 ```
 
-URL pública: _a definir_
+URL pública:[ _a Marketplace de NFTs](https://marketplace-de-nfts-production.up.railway.app/)
