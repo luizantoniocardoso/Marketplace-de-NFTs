@@ -2,12 +2,14 @@ import { useRouter } from '@tanstack/react-router'
 import { useCart } from '@/entities/cart'
 import { useProfile } from '@/entities/user'
 import { useWallets } from '@/entities/wallet'
+import { useDocumentTitle } from '@/shared/lib'
 import { MarketBreadcrumbs, MobileTopBar } from '@/shared/ui'
 import { CheckoutView } from '@/widgets/checkout'
 import { CheckoutBlocked } from './CheckoutBlocked'
 import { CheckoutSkeleton } from './CheckoutSkeleton'
 
 export function CheckoutPage() {
+  useDocumentTitle('Pagamento')
   const router = useRouter()
   const cart = useCart()
   const wallets = useWallets()

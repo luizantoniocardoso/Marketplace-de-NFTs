@@ -15,7 +15,7 @@ export function SessionExpiryHandler() {
     () =>
       onAuthFailure((code) => {
         if (!viewer.getId()) return
-        endSession(queryClient)
+        endSession(queryClient, { expired: true })
         toast.error(
           code === 'SESSION_EXPIRED'
             ? 'Sua sessão expirou. Entre novamente para continuar.'

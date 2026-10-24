@@ -16,12 +16,12 @@ interface FavoriteButtonProps {
 export function FavoriteButton({ nftId, nftName, variant = 'outline', className }: FavoriteButtonProps) {
   const navigate = useNavigate()
   const href = useRouterState({ select: (state) => state.location.href })
-  const { isAuthenticated } = useSession()
+  const { viewerId } = useSession()
   const favorite = useIsFavorite(nftId)
   const toggle = useToggleFavorite()
 
   const onClick = () => {
-    if (!isAuthenticated) {
+    if (!viewerId) {
       void navigate({ to: '/login', search: { redirect: href } })
       return
     }

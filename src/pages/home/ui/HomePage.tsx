@@ -1,3 +1,4 @@
+import { useDocumentTitle } from '@/shared/lib'
 import { CatalogMobileBar, CatalogSection } from '@/widgets/catalog'
 import { HeroCarousel } from '@/widgets/hero-carousel'
 import { Journal } from '@/widgets/journal'
@@ -5,6 +6,7 @@ import { PromoBanners } from '@/widgets/promo-banners'
 import { useCatalogSearch } from '../model'
 
 export function HomePage() {
+  useDocumentTitle(null)
   const controls = useCatalogSearch()
 
   return (

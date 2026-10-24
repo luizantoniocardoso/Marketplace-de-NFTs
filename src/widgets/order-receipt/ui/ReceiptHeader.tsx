@@ -15,9 +15,9 @@ export function ReceiptHeader({ status }: { status: OrderStatus }) {
         <Loader2 className="size-16 animate-spin text-brand motion-reduce:animate-none" aria-hidden="true" />
       )}
       {status === 'declined' && <XCircle className="size-16 text-coral" strokeWidth={1.5} aria-hidden="true" />}
-      <h1 role="status" aria-live="polite" className="text-body-md font-bold text-text-secondary">
-        {COPY[status]}
-      </h1>
+      <div role="status" aria-live="polite">
+        <h1 className="text-body-md font-bold text-text-secondary">{COPY[status]}</h1>
+      </div>
     </div>
   )
 }

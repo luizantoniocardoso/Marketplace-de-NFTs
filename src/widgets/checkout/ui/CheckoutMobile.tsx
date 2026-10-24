@@ -51,8 +51,9 @@ export function CheckoutMobileConfirm({ checkout }: { checkout: CheckoutControll
         variant="brand-pill"
         size="pill"
         className="w-full"
-        onClick={() => void checkout.startReview()}
-        disabled={checkout.connecting || !checkout.cart.data?.items.length}
+        onClick={() => !checkout.connecting && void checkout.startReview()}
+        aria-disabled={checkout.connecting || undefined}
+        disabled={!checkout.cart.data?.items.length}
       >
         {checkout.connecting ? 'Conectando carteira…' : 'Confirmar compra'}
       </Button>

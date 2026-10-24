@@ -30,8 +30,8 @@ export function useToggleFavorite() {
     },
     onError: (error, { nftName, favorite }, context) => {
       queryClient.setQueryData(key, context?.previous)
-      const action = favorite ? 'adicionar' : 'remover'
-      toast.error(`Não foi possível ${action} ${nftName} dos favoritos.`, { description: getApiError(error).message })
+      const action = favorite ? `adicionar ${nftName} aos favoritos` : `remover ${nftName} dos favoritos`
+      toast.error(`Não foi possível ${action}.`, { description: getApiError(error).message })
     },
     onSuccess: (_data, { nftName, favorite }) => {
       toast.success(favorite ? `${nftName} foi adicionado aos favoritos.` : `${nftName} foi removido dos favoritos.`)

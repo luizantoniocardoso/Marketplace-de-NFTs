@@ -2,12 +2,14 @@ import { AlertTriangle } from 'lucide-react'
 import { useProfile } from '@/entities/user'
 import { useWallets } from '@/entities/wallet'
 import { getApiError } from '@/shared/api'
+import { useDocumentTitle } from '@/shared/lib'
 import { Button, StateMessage } from '@/shared/ui'
 import { PrimaryWalletSection } from './PrimaryWalletSection'
 import { SecondaryWalletSection } from './SecondaryWalletSection'
 import { WalletsSkeleton } from './WalletsSkeleton'
 
 export function WalletsPage() {
+  useDocumentTitle('Carteiras')
   const wallets = useWallets()
   const profile = useProfile()
 

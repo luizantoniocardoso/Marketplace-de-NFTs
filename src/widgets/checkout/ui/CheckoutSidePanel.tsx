@@ -36,8 +36,9 @@ export function CheckoutSidePanel({ checkout }: { checkout: CheckoutController }
         variant="brand"
         size="xl"
         className="mt-6 w-full"
-        onClick={() => void checkout.startReview()}
-        disabled={checkout.connecting || !cart.data?.items.length}
+        onClick={() => !checkout.connecting && void checkout.startReview()}
+        aria-disabled={checkout.connecting || undefined}
+        disabled={!cart.data?.items.length}
       >
         {checkout.connecting ? 'Conectando carteira…' : 'Confirmar compra'}
       </Button>

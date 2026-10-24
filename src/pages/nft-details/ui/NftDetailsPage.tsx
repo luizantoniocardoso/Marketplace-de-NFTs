@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { getRouteApi, useRouter } from '@tanstack/react-router'
 import { nftQueries } from '@/entities/nft'
 import { FavoriteButton } from '@/features/toggle-favorite'
+import { useDocumentTitle } from '@/shared/lib'
 import { MarketBreadcrumbs, MobileTopBar } from '@/shared/ui'
 import { NftGallery } from '@/widgets/nft-gallery'
 import { NftInfoTabs } from '@/widgets/nft-info-tabs'
@@ -16,6 +17,7 @@ export function NftDetailsPage() {
   const { nftId } = route.useParams()
   const router = useRouter()
   const { data: nft, error, isPending, refetch } = useQuery(nftQueries.detail(nftId))
+  useDocumentTitle(nft?.name ?? (error ? 'NFT não encontrado' : null))
 
   const goBack = () => (router.history.canGoBack() ? router.history.back() : void router.navigate({ to: '/' }))
 

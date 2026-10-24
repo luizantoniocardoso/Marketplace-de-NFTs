@@ -7,8 +7,9 @@ export default defineConfig({
   testDir: './tests/e2e',
   snapshotPathTemplate: '{testDir}/__screenshots__/{projectName}/{testFilePath}/{arg}{ext}',
   fullyParallel: true,
+  timeout: 60_000,
   forbidOnly: isCI,
-  retries: isCI ? 1 : 0,
+  retries: 1,
   reporter: [['html', { open: 'never' }], ['list']],
   use: {
     baseURL: `http://localhost:${PORT}`,

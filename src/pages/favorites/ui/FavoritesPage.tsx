@@ -4,9 +4,11 @@ import { Heart } from 'lucide-react'
 import { useFavorites } from '@/entities/favorite'
 import { NftCard, NftCardSkeleton, nftQueries } from '@/entities/nft'
 import { FavoriteButton } from '@/features/toggle-favorite'
+import { useDocumentTitle } from '@/shared/lib'
 import { Button, StateMessage } from '@/shared/ui'
 
 export function FavoritesPage() {
+  useDocumentTitle('Lista de interesse')
   const favorites = useFavorites()
   const ids = favorites.data?.nftIds ?? []
   const details = useQueries({ queries: ids.map((id) => nftQueries.detail(id)) })

@@ -1,9 +1,11 @@
 import { getRouteApi, Link, useNavigate } from '@tanstack/react-router'
+import { useDocumentTitle } from '@/shared/lib'
 import { AuthScreen } from '@/widgets/auth-card'
 
 const route = getRouteApi('/register')
 
 export function RegisterPage() {
+  useDocumentTitle('Criar conta')
   const { redirect } = route.useSearch()
   const navigate = useNavigate()
 

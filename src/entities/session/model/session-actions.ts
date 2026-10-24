@@ -12,8 +12,8 @@ export function startSession(queryClient: QueryClient, response: AuthResponse) {
   void queryClient.invalidateQueries({ predicate: (query) => query.queryKey[0] !== sessionKeys.all[0] })
 }
 
-export function endSession(queryClient: QueryClient) {
-  viewer.signOut()
+export function endSession(queryClient: QueryClient, { expired = false } = {}) {
+  viewer.signOut({ expired })
   syncSocketSession()
   queryClient.removeQueries({ queryKey: [PRIVATE_SCOPE] })
   queryClient.removeQueries({ queryKey: sessionKeys.all })

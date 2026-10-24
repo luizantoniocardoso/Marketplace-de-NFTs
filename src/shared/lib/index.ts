@@ -16,3 +16,4 @@ export {
   USERNAME_PATTERN,
   VALIDATION_MESSAGES,
 } from './validation'
+export { useDocumentTitle } from './use-document-title'

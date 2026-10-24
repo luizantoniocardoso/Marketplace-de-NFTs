@@ -46,7 +46,7 @@ export function CartItems() {
     <div aria-busy={isPending} className="flex flex-col gap-4">
       {cart && <CartChangesNotice items={cart.items} />}
       <CartTable items={cart?.items} />
-      <ul className="flex flex-col gap-5 md:hidden">
+      <ul aria-label="Itens do carrinho" className="flex flex-col gap-5 md:hidden">
         {cart
           ? cart.items.map((item) => (
               <li key={item.id}>

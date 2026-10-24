@@ -3,10 +3,12 @@ import { useProfile } from '@/entities/user'
 import { ProfileForm } from '@/features/edit-profile'
 import { AvatarField } from '@/features/update-avatar'
 import { getApiError } from '@/shared/api'
+import { useDocumentTitle } from '@/shared/lib'
 import { Button, StateMessage } from '@/shared/ui'
 import { ProfileSkeleton } from './ProfileSkeleton'
 
 export function ProfilePage() {
+  useDocumentTitle('Dados do perfil')
   const { data: user, error, isPending, refetch } = useProfile()
 
   return (

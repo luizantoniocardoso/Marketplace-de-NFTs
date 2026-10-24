@@ -1,10 +1,12 @@
 import { getRouteApi, Link, useNavigate } from '@tanstack/react-router'
+import { useDocumentTitle } from '@/shared/lib'
 import { AuthScreen } from '@/widgets/auth-card'
 import { SessionNotice } from './SessionNotice'
 
 const route = getRouteApi('/login')
 
 export function LoginPage() {
+  useDocumentTitle('Entrar')
   const { redirect, reason } = route.useSearch()
   const navigate = useNavigate()
 

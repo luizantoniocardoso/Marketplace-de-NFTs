@@ -5,7 +5,13 @@ import { cartKeys } from '@/entities/cart'
 import { applyNftUpdate, nftKeys } from '@/entities/nft'
 import { applyOrderUpdate, orderKeys } from '@/entities/order'
 import { loadSocket, viewer, whenApiReady } from '@/shared/api'
-import { REALTIME_EVENTS, type CartDto, type NftUpdatedEvent, type OrderUpdatedEvent } from '@/shared/contracts'
+import {
+  REALTIME_EVENTS,
+  type CartDto,
+  type NftDetailDto,
+  type NftUpdatedEvent,
+  type OrderUpdatedEvent,
+} from '@/shared/contracts'
 import { compareEth, formatEth } from '@/shared/lib'
 
 const SEEN_EVENTS_LIMIT = 200
@@ -16,6 +22,15 @@ function createEventLog() {
     if (seen.has(eventId)) return false
     seen.add(eventId)
     if (seen.size > SEEN_EVENTS_LIMIT) seen.delete(seen.values().next().value!)
+    return true
+  }
+}
+
+function createVersionLog() {
+  const latest = new Map<string, number>()
+  return (resource: string, version: number, known = -1) => {
+    if (version <= Math.max(latest.get(resource) ?? -1, known)) return false
+    latest.set(resource, version)
     return true
   }
 }
@@ -41,10 +56,11 @@ export function RealtimeBridge() {
     let cancelled = false
     let release = () => {}
     const isNew = createEventLog()
-    let connectedBefore = false
+    const isFresh = createVersionLog()
 
     const onNftUpdated = (event: NftUpdatedEvent) => {
-      if (!isNew(event.eventId)) return
+      const cachedVersion = queryClient.getQueryData<NftDetailDto>(nftKeys.detail(event.data.nftId))?.version
+      if (!isNew(event.eventId) || !isFresh(`nft:${event.data.nftId}`, event.version, cachedVersion)) return
       applyNftUpdate(queryClient, event.data, event.version)
       const viewerId = viewer.getId()
       const cart = queryClient.getQueryData<CartDto>(cartKeys.detail(viewerId))
@@ -62,29 +78,36 @@ export function RealtimeBridge() {
       }
     }
 
-    const onConnect = () => {
-      if (connectedBefore) {
-        const viewerId = viewer.getId()
-        void queryClient.invalidateQueries({ queryKey: nftKeys.all })
-        void queryClient.invalidateQueries({ queryKey: cartKeys.root(viewerId) })
-        void queryClient.invalidateQueries({ queryKey: orderKeys.all(viewerId) })
-      }
-      connectedBefore = true
+    const setStatus = (status: 'connected' | 'disconnected') => {
+      document.documentElement.dataset.realtime = status
     }
+
+    const onConnect = () => {
+      setStatus('connected')
+      const viewerId = viewer.getId()
+      void queryClient.invalidateQueries({ queryKey: nftKeys.all })
+      void queryClient.invalidateQueries({ queryKey: cartKeys.root(viewerId) })
+      void queryClient.invalidateQueries({ queryKey: orderKeys.all(viewerId) })
+    }
+
+    const onDisconnect = () => setStatus('disconnected')
 
     void whenApiReady()
       .then(loadSocket)
       .then((socket) => {
         if (cancelled) return
         socket.on('connect', onConnect)
+        socket.on('disconnect', onDisconnect)
         socket.on(REALTIME_EVENTS.nftUpdated, onNftUpdated)
         socket.on(REALTIME_EVENTS.orderUpdated, onOrderUpdated)
         socket.connect()
         release = () => {
           socket.off('connect', onConnect)
+          socket.off('disconnect', onDisconnect)
           socket.off(REALTIME_EVENTS.nftUpdated, onNftUpdated)
           socket.off(REALTIME_EVENTS.orderUpdated, onOrderUpdated)
           socket.disconnect()
+          delete document.documentElement.dataset.realtime
         }
       })
 

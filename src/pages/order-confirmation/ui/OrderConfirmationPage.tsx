@@ -2,6 +2,7 @@ import { getRouteApi, Link } from '@tanstack/react-router'
 import { AlertTriangle, SearchX } from 'lucide-react'
 import { useOrder } from '@/entities/order'
 import { getApiError } from '@/shared/api'
+import { useDocumentTitle } from '@/shared/lib'
 import { Button, StateMessage } from '@/shared/ui'
 import { OrderReceipt, OrderReceiptSkeleton } from '@/widgets/order-receipt'
 
@@ -10,6 +11,7 @@ const route = getRouteApi('/_authenticated/orders/$orderId')
 export function OrderConfirmationPage() {
   const { orderId } = route.useParams()
   const { data: order, error, isPending, refetch } = useOrder(orderId)
+  useDocumentTitle(order ? `Pedido ${order.id}` : 'Pedido')
 
   const content = () => {
     if (order) return <OrderReceipt order={order} />

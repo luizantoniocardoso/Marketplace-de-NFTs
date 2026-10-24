@@ -1,10 +1,12 @@
 import { useRouter } from '@tanstack/react-router'
+import { useDocumentTitle } from '@/shared/lib'
 import { MarketBreadcrumbs, MobileTopBar } from '@/shared/ui'
 import { CartItems } from '@/widgets/cart-items'
 import { CartSummary } from '@/widgets/cart-summary'
 import { RelatedNfts } from '@/widgets/related-nfts'
 
 export function CartPage() {
+  useDocumentTitle('Carrinho')
   const router = useRouter()
   const goBack = () => (router.history.canGoBack() ? router.history.back() : void router.navigate({ to: '/' }))
 

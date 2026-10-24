@@ -27,9 +27,12 @@ function ScrollCarousel({ label, children, className, listClassName }: ScrollCar
     measure()
     const observer = new ResizeObserver(measure)
     observer.observe(list)
+    const mutations = new MutationObserver(measure)
+    mutations.observe(list, { childList: true })
     list.addEventListener('scroll', measure, { passive: true })
     return () => {
       observer.disconnect()
+      mutations.disconnect()
       list.removeEventListener('scroll', measure)
     }
   }, [measure])

@@ -26,6 +26,7 @@ function write(key: string, value: string | null) {
 
 let token = read(TOKEN_KEY)
 let viewerId = token ? read(VIEWER_KEY) : null
+let expired = false
 
 function notify() {
   listeners.forEach((listener) => listener())
@@ -34,6 +35,7 @@ function notify() {
 export const viewer = {
   getToken: () => token,
   getId: () => viewerId,
+  wasExpired: () => expired,
   getCartId() {
     let cartId = read(CART_KEY)
     if (!cartId) {
@@ -43,13 +45,15 @@ export const viewer = {
     return cartId
   },
   signIn(nextToken: string, nextViewerId: string) {
+    expired = false
     token = nextToken
     viewerId = nextViewerId
     write(TOKEN_KEY, nextToken)
     write(VIEWER_KEY, nextViewerId)
     notify()
   },
-  signOut() {
+  signOut({ expired: sessionExpired = false } = {}) {
+    expired = sessionExpired
     token = null
     viewerId = null
     write(TOKEN_KEY, null)

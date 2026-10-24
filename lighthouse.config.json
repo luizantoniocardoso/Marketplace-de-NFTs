@@ -5,7 +5,7 @@
   "profiles": ["mobile", "desktop"],
   "pages": [
     { "name": "home", "path": "/" },
-    { "name": "nft-details", "path": "/nft/1" }
+    { "name": "nft-details", "path": "/nft/nft-001" }
   ],
   "targets": {
     "performance": 90,

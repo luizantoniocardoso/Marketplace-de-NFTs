@@ -21,7 +21,14 @@ interface RealtimeClient {
 
 const clients = new Set<RealtimeClient>()
 let eventSequence = 0
-let lastEvent: { name: string; payload: RealtimeEvent<string, unknown>; userId: string | null } | null = null
+interface SentEvent {
+  name: string
+  payload: RealtimeEvent<string, unknown>
+  userId: string | null
+}
+
+const HISTORY_LIMIT = 50
+const history: SentEvent[] = []
 
 export function registerClient(io: SocketIoConnection, close: () => void) {
   const client: RealtimeClient = { io, userId: null, close }
@@ -40,12 +47,17 @@ function nextEventId() {
   return `evt-${Date.now().toString(36)}-${eventSequence}`
 }
 
-function send(name: string, payload: RealtimeEvent<string, unknown>, userId: string | null) {
-  lastEvent = { name, payload, userId }
+function deliver({ name, payload, userId }: SentEvent) {
   for (const client of clients) {
     if (userId && client.userId !== userId) continue
     client.io.client.emit(name, payload)
   }
+}
+
+function send(name: string, payload: RealtimeEvent<string, unknown>, userId: string | null) {
+  history.push({ name, payload, userId })
+  if (history.length > HISTORY_LIMIT) history.shift()
+  deliver({ name, payload, userId })
 }
 
 export function emitNftUpdated(nft: MockNft, previousPriceEth: string | null = null) {
@@ -79,11 +91,17 @@ export function emitOrderUpdated(order: OrderDto & { userId: string }) {
 }
 
 export function replayLastEvent({ stale = false } = {}) {
-  if (!lastEvent) return false
-  const payload = stale
-    ? { ...lastEvent.payload, eventId: nextEventId(), version: Math.max(0, lastEvent.payload.version - 1) }
-    : lastEvent.payload
-  send(lastEvent.name, payload, lastEvent.userId)
+  const last = history.at(-1)
+  if (!last) return false
+  if (!stale) {
+    deliver(last)
+    return true
+  }
+  const previous = history
+    .slice(0, -1)
+    .findLast((event) => event.name === last.name && event.payload.resource.id === last.payload.resource.id)
+  const outdated = previous ?? { ...last, payload: { ...last.payload, version: Math.max(0, last.payload.version - 1) } }
+  deliver({ ...outdated, payload: { ...outdated.payload, eventId: nextEventId() } })
   return true
 }
 
